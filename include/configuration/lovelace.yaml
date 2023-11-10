@@ -1,0 +1,11 @@
+# Uncommend once everything is in includes
+# lovelace:
+mode: storage
+# Add yaml dashboards
+dashboards:
+  lovelace-kiosk:
+    mode: yaml
+    title: Kiosk
+    icon: mdi:tablet
+    show_in_sidebar: true
+    filename: /config/include/lovelace/01_kiosk/dashboard.yaml

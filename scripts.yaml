@@ -1,0 +1,41 @@
+deurbel_niet_thuis:
+  alias: 'Deurbel: niet thuis'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_id: https://ha.sietsetrommelen.nl/local/tts/deurbel_niet_thuis.mp3
+      media_content_type: music
+    target:
+      entity_id: media_player.g4_doorbell_speaker
+  mode: single
+deurbel_pakket:
+  alias: 'Deurbel: pakket achterlaten'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_id: https://ha.sietsetrommelen.nl/local/tts/deurbel_pakket_deur.mp3
+      media_content_type: music
+    target:
+      entity_id: media_player.g4_doorbell_speaker
+  mode: single
+deurbel_kom_eraan:
+  alias: 'Deurbel: kom eraan'
+  sequence:
+  - service: media_player.play_media
+    data:
+      media_content_id: https://ha.sietsetrommelen.nl/local/tts/deurbel_onderweg.mp3
+      media_content_type: music
+    target:
+      entity_id: media_player.g4_doorbell_speaker
+  mode: single
+ios_notify_test:
+  alias: iOS notify test
+  use_blueprint:
+    path: Hypercookie/ios_notification_script_blueprint.yaml
+    input:
+      message_attachment: Camera Stream
+      target_for_notifications: mobile_app_iphone_van_sietse
+      message_content: Het gaat regenen!
+      url: /map
+      map_show_user_location: false
+      camera_camera_entity: camera.buienradar

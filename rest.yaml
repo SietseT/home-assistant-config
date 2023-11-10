@@ -1,0 +1,67 @@
+- resource: https://queue-times.com/nl/parks/160/queue_times.json
+  scan_interval: 600
+  sensor:
+    - name: "Efteling Wachttijd Symbolica"
+      json_attributes_path: "$.lands.[*].rides[?(@.name=='Symbolica')]"
+      json_attributes:
+        - "id"
+        - "name"
+        - "is_open"
+        - "wait_time"
+        - "last_updated"
+      unique_id: efteling_wachttijd_symbolica
+      value_template: "OK"
+    - name: "Efteling Wachttijd Python"
+      json_attributes_path: "$.lands.[*].rides[?(@.name=='Python')]"
+      json_attributes:
+        - "id"
+        - "name"
+        - "is_open"
+        - "wait_time"
+        - "last_updated"
+      unique_id: efteling_wachttijd_python
+      value_template: "OK"
+    - name: "Efteling Wachttijd Joris en de Draak"
+      json_attributes_path: "$.lands.[*].rides[?(@.name=='Joris en de Draak')]"
+      json_attributes:
+        - "id"
+        - "name"
+        - "is_open"
+        - "wait_time"
+        - "last_updated"
+      unique_id: efteling_wachttijd_joris
+      value_template: "OK"
+    - name: "Efteling Wachttijd Baron 1898"
+      json_attributes_path: "$.lands.[*].rides[?(@.name=='Baron 1898')]"
+      json_attributes:
+        - "id"
+        - "name"
+        - "is_open"
+        - "wait_time"
+        - "last_updated"
+      unique_id: efteling_wachttijd_baron
+      value_template: "OK"
+    - name: "Efteling Wachttijd De Vliegende Hollander"
+      json_attributes_path: "$.lands.[*].rides[?(@.name=='De Vliegende Hollander')]"
+      json_attributes:
+        - "id"
+        - "name"
+        - "is_open"
+        - "wait_time"
+        - "last_updated"
+      unique_id: efteling_wachttijd_vliegende
+      value_template: "OK"
+    - name: "Efteling Wachttijd Droomvlucht"
+      json_attributes_path: "$.lands.[*].rides[?(@.name=='Droomvlucht')]"
+      json_attributes:
+        - "id"
+        - "name"
+        - "is_open"
+        - "wait_time"
+        - "last_updated"
+      unique_id: efteling_wachttijd_droomvlucht
+      value_template: "OK"
+    - name: "Efteling gesloten attracties"
+      json_attributes_path: "$.lands.[*].rides[?(@.is_open==false && @.id != 7357  && @.id != 6178  && @.id != 10462  && @.id != 6681 && @.id != 6168 && @.id != 6164)].name"
+      unique_id: efteling_gesloten_attracties
+      value_template: "{{ value }}"

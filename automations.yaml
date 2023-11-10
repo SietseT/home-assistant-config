@@ -1,0 +1,1156 @@
+- id: '1669411492076'
+  alias: Toilet bewegingssensor
+  description: ''
+  use_blueprint:
+    path: homeassistant/motion_light.yaml
+    input:
+      motion_entity: binary_sensor.toilet_bewegingssensor_occupancy
+      light_target:
+        entity_id:
+        - light.toilet
+      no_motion_wait: 120
+- id: '1669485903715'
+  alias: 'Trap: bewegingssensor'
+  description: ''
+  use_blueprint:
+    path: homeassistant/motion_light.yaml
+    input:
+      light_target:
+        entity_id: light.trap
+      motion_entity: binary_sensor.hal_trap_motion_detection
+      no_motion_wait: 0
+- id: '1669629963423'
+  alias: 'Tuin: lampen'
+  description: ''
+  trigger:
+  - platform: time
+    at: '23:30:00'
+    id: time
+  - platform: sun
+    event: sunset
+    offset: 0
+    id: sun
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id: time
+    then:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.tuin
+    else:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id: light.tuin
+  mode: single
+- id: '1669644179785'
+  alias: 'Kledingkamer: bewegingssensor'
+  description: ''
+  use_blueprint:
+    path: motion_light_with_lux.yaml
+    input:
+      motion_sensor: binary_sensor.kledingkamer_bewegingssensor_occupancy
+      light_sensor: sensor.kledingkamer_bewegingssensor_illuminance_lux
+      illuminace_level: 100
+      light_target:
+        entity_id: light.kledingkamer
+      brightness_sun_down: 180
+      enable_nighttime: true
+      illuminance_level_input_number: input_number.lux_kledingkamer
+      illuminance_level: 500
+      no_motion_wait: 30
+- id: '1669645331220'
+  alias: 'Hal: bewegingssensor'
+  description: ''
+  use_blueprint:
+    path: motion_light_with_lux.yaml
+    input:
+      illuminace_level: 100
+      brightness_sun_down: 155
+      motion_sensor: binary_sensor.hal_bewegingssensor_occupancy
+      light_sensor: sensor.hal_bewegingssensor_illuminance_lux
+      light_target:
+        entity_id: light.hal
+      illuminance_level: 30
+      illuminance_level_input_number: input_number.lux_outside
+- id: '1669648111014'
+  alias: 'Slaapkamer: bewegingssensor'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.slaapkamer_bewegingssensor_occupancy
+    to: 'on'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.slaapkamer_bewegingssensor_illuminance_lux
+    below: input_number.lux_slaapkamer
+  - condition: state
+    entity_id: binary_sensor.iemand_slaapt
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness: 255
+    target:
+      entity_id: light.slaapkamer_voetlamp
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.slaapkamer_bewegingssensor_occupancy
+      to: 'off'
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.slaapkamer_voetlamp
+  mode: restart
+- id: '1669655014838'
+  alias: 'Aanwezigheid: niemand thuis'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - group.family
+    from: home
+    to: not_home
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: all
+  mode: single
+- id: '1669750694394'
+  alias: Playground automation
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.kledingkamer_motion_detection
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: select.select_option
+    data:
+      option: Niet thuis
+    target:
+      entity_id: select.g4_doorbell_doorbell_text
+  mode: single
+- id: '1669762776206'
+  alias: 'Slaapkamer: verwarmen avond'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.iemand_slaapt
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: 19
+    target:
+      entity_id: climate.slaapkamer_thermostat
+  mode: single
+- id: '1669923852642'
+  alias: 'Badkamer: lampen'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.badkamer_aanwezigheid
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: time
+    after: 07:00:00
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 100
+      color_temp: 300
+    target:
+      entity_id: light.badkamer
+  - repeat:
+      until:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.badkamer_aanwezigheid
+          state: 'off'
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+  - if:
+    - condition: state
+      entity_id: input_boolean.bad_modus
+      state: 'on'
+    then:
+    - delay:
+        hours: 0
+        minutes: 30
+        seconds: 0
+        milliseconds: 0
+    else:
+    - delay:
+        hours: 0
+        minutes: 2
+        seconds: 0
+        milliseconds: 0
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.badkamer
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.bad_modus
+  mode: restart
+- id: '1669931724918'
+  alias: 'Eerste verdieping gang: lamp'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - group.family
+    from: not_home
+    to: home
+    id: thuis
+  - platform: state
+    entity_id:
+    - binary_sensor.iemand_slaapt
+    to: 'on'
+    id: slaap
+  - platform: state
+    entity_id:
+    - binary_sensor.is_donker
+    to: 'on'
+    id: is_donker
+  - platform: state
+    entity_id:
+    - binary_sensor.is_donker
+    to: 'off'
+    id: niet_donker
+  - platform: state
+    entity_id:
+    - binary_sensor.iemand_slaapt
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: group.family
+    state: home
+  - condition: state
+    entity_id: binary_sensor.is_donker
+    state: 'on'
+  action:
+  - if:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id: slaap
+      - condition: trigger
+        id:
+        - niet_donker
+    then:
+    - type: turn_off
+      device_id: 9ee1a7c22ac936fd4728d00f24cdc97f
+      entity_id: bbe9894ddcc911608bd5a7bc7c6a6015
+      domain: light
+    else:
+    - type: turn_on
+      device_id: 9ee1a7c22ac936fd4728d00f24cdc97f
+      entity_id: bbe9894ddcc911608bd5a7bc7c6a6015
+      domain: light
+  mode: single
+- id: '1669970517784'
+  alias: 'Laag batterijniveau: notificatie'
+  description: ''
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      time: '19:00:00'
+      day: 7
+      actions:
+      - service: notify.mobile_app_iphone_van_sietse
+        data:
+          title: Laag batterijniveau
+          message: '{{sensors}}'
+- id: '1670355409980'
+  alias: 'Badkamer: bad modus'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: d7a0ba1f878d453ce3fecd0c36aed485
+    type: action
+    subtype: single
+    discovery_id: 0x00158d0006335e02 action_single
+    alias: Badkamer bad modus button tapped
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.bad_modus
+  mode: single
+- id: '1671052878147'
+  alias: Iedereen slaapt
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.iedereen_slaapt
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: all
+  mode: single
+- id: '1671053954323'
+  alias: 'Slaapkamer: verwarming uit'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.iemand_slaapt
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: 12
+    target:
+      device_id: 274685efa30c5190b9946adfdca7d235
+  mode: single
+- id: '1671090641380'
+  alias: Iemand wakker
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.iedereen_slaapt
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.is_donker
+    state: 'on'
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.woonkamer_ochtend
+    metadata: {}
+  mode: single
+- id: '1671120100205'
+  alias: Avondscène
+  description: Zet avondscène aan als iemand thuis komt en het is donker, of als het
+    donker wordt en er is al iemand thuis
+  trigger:
+  - platform: state
+    entity_id:
+    - group.family
+    from: not_home
+    to: home
+  - platform: state
+    entity_id:
+    - binary_sensor.is_donker
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: group.family
+    state: home
+  - condition: state
+    entity_id: binary_sensor.is_donker
+    state: 'on'
+  - condition: state
+    entity_id: binary_sensor.iemand_slaapt
+    state: 'off'
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.woonkamer_avond
+    metadata: {}
+  - service: automation.trigger
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.avondscene_uit_als_het_licht_is
+    enabled: false
+  mode: single
+- id: '1671461388682'
+  alias: Deurbel
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.g4_doorbell_doorbell
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: camera.snapshot
+    data:
+      filename: /media/local/g4_doorbell_snapshot.jpg
+    target:
+      entity_id: camera.g4_doorbell
+  - service: notify.all_ios_devices
+    data:
+      title: "\U0001F514 TRIINNGGG \U0001F514"
+      message: "Er staat iemand aan de deur! \U0001F6AA"
+      data:
+        entity_id: camera.doorbell_snapshot
+        url: /lovelace-huis/protect
+        actions:
+        - action: DOORBELL_NOT_HOME
+          title: Niet thuis
+        - action: DOORBELL_LEAVE_PACKAGE
+          title: Pakket achterlaten
+        - action: DOORBELL_OMW
+          title: Kom eraan
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: camera.snapshot
+    data:
+      filename: /media/local/g4_doorbell_snapshot.jpg
+    target:
+      entity_id: camera.g4_doorbell
+  mode: single
+- id: '1671565929559'
+  alias: 'Deurbel: iOS actions'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: DOORBELL_NOT_HOME
+    id: DOORBELL_NOT_HOME
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: DOORBELL_LEAVE_PACKAGE
+    id: DOORBELL_LEAVE_PACKAGE
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: DOORBELL_OMW
+    id: DOORBELL_OMW
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id: DOORBELL_NOT_HOME
+    then:
+    - service: script.deurbel_niet_thuis
+      data: {}
+  - if:
+    - condition: trigger
+      id: DOORBELL_LEAVE_PACKAGE
+    then:
+    - service: script.deurbel_pakket
+      data: {}
+  - if:
+    - condition: trigger
+      id: DOORBELL_OMW
+    then:
+    - service: script.deurbel_kom_eraan
+      data: {}
+  mode: single
+- id: '1671961809570'
+  alias: Wasmachine
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.wasmachine_status
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.wasmachine_status
+      from: 'on'
+      to: 'off'
+  - service: notify.all_ios_devices
+    data:
+      message: "De wasmachine is klaar! \U0001F455"
+  mode: single
+- id: '1672661865575'
+  alias: 'Onderweg: iemand'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.activiteit_sietse
+    to: Onderweg
+    id: sietse
+    from: Niet thuis
+  - platform: state
+    entity_id:
+    - sensor.activiteit_femke
+    to: Onderweg
+    id: femke_werk
+    from: Werk
+  - platform: state
+    entity_id:
+    - sensor.activiteit_femke
+    to: Onderweg
+    id: femke_niet_thuis
+    from: Niet thuis
+  condition:
+  - condition: state
+    entity_id: sensor.iemand_thuis
+    state: 'on'
+  action:
+  - if:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id: femke_werk
+      - condition: trigger
+        id: femke_niet_thuis
+    then:
+    - service: notify.mobile_app_iphone_van_sietse
+      data:
+        message: 'Femke is onderweg naar huis. ETA: {{ states(''sensor.reistijd_femke'')
+          }} minuten.'
+    - wait_for_trigger:
+      - platform: numeric_state
+        entity_id: sensor.reistijd_femke
+        below: 10
+    - service: notify.mobile_app_iphone_van_sietse
+      data:
+        message: Femke is bijna thuis!
+  - if:
+    - condition: trigger
+      id: sietse
+    then:
+    - wait_for_trigger:
+      - platform: numeric_state
+        entity_id: sensor.reistijd_sietse
+        below: 10
+    - service: notify.mobile_app_iphone_van_femke
+      data:
+        message: Sietse is bijna thuis!
+  mode: single
+- id: '1673295420349'
+  alias: 'Oven: klaar met voorverwarmen'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.oven_oven_job_state
+    from: preheat
+    to: cooking
+  - platform: state
+    entity_id:
+    - sensor.oven_oven_job_state
+    from: fastPreheat
+    to: cooking
+  condition: []
+  action:
+  - service: notify.all_ios_devices
+    data:
+      message: "De oven is voorverwarmd! \U0001F373"
+  mode: single
+- id: '1673295450710'
+  alias: 'Oven: klaar'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.oven_oven_job_state
+    from: cooking
+    to: finished
+  condition: []
+  action:
+  - service: notify.all_ios_devices
+    data:
+      message: De oven is klaar!
+  mode: single
+- id: '1673347577930'
+  alias: 'KNMI: Waarschuwing'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.knmi_thuis_waarschuwing
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.all_ios_devices
+    data:
+      title: "Waarschuwing \U0001F329️"
+      message: '{{ state_attr(''binary_sensor.knmi_thuis_waarschuwing'', ''Waarschuwing'')
+        }}'
+  mode: single
+- id: '1675349279803'
+  alias: Garagedeur open
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.garage_deursensor_contact
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.all_ios_devices
+    data:
+      message: De garagedeur staat open ⚠️
+  mode: single
+- id: '1675507894737'
+  alias: 'Ochtend scene: uit als het licht is'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: call_service
+    event_data:
+      domain: scene
+      service: turn_on
+      service_data:
+        entity_id:
+        - scene.woonkamer_ochtend
+  - platform: event
+    event_type: call_service
+    event_data:
+      domain: scene
+      service: turn_on
+      service_data:
+        entity_id: scene.woonkamer_ochtend
+  condition: []
+  action:
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.is_donker
+      to: 'off'
+    alias: Wacht tot het niet meer donker is
+  - service: scene.turn_on
+    target:
+      entity_id: scene.ochtend_lichten_uit
+    metadata: {}
+  mode: single
+- id: '1676715508365'
+  alias: 'Garagekamer: bewegingssensor'
+  description: ''
+  use_blueprint:
+    path: motion_light_with_lux.yaml
+    input:
+      illuminace_level: 150
+      light_target:
+        entity_id: light.garagekamer
+      brightness_sun_up: 255
+      motion_sensor: binary_sensor.garagekamer_bewegingssensor_occupancy
+      light_sensor: sensor.garagekamer_bewegingssensor_illuminance_lux
+      enable_nighttime: true
+      brightness_sun_down: 255
+      illuminance_level: 115
+      illuminance_level_input_number: input_number.lux_garagekamer
+      no_motion_wait: 30
+- id: '1678262903061'
+  alias: 'WP test: thermostaat obv prijs'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.electricity_price_cheap_or_normal
+    id: expensive
+    to: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.electricity_price_cheap_or_normal
+    id: normal
+    to: 'on'
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id: expensive
+    then:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.wp_thermostaat_aan
+  - if:
+    - condition: trigger
+      id: normal
+    then:
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.wp_thermostaat_aan
+  mode: single
+- id: '1680113728448'
+  alias: 'Stoner: aan'
+  description: ''
+  trigger:
+  - platform: time
+    at: '18:30:00'
+  - platform: time
+    at: 07:30:00
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.stoner
+  mode: single
+- id: '1680686714491'
+  alias: 'SWW: Opwarmen als temperatuur te laag is'
+  description: Zorgt ervoor dat de SWW tank opgewarmd wordt als de temperatuur te
+    laag is
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.warmtepomp_watertanktemperature
+    below: 44
+  condition:
+  - condition: state
+    entity_id: water_heater.altherma
+    state: 'off'
+  action:
+  - wait_template: '{% if state_attr(''sensor.electricity_price_thuis'', ''price_level'')
+      == "CHEAP" %}
+
+      true
+
+      {% elif state_attr(''sensor.electricity_price_thuis'', ''price_level'')
+      == "NORMAL" %}
+
+      true
+
+      {% else %}
+
+      false
+
+      {% endif %}'
+    continue_on_timeout: true
+    timeout: 0:01
+    enabled: false
+  - service: water_heater.set_operation_mode
+    data:
+      operation_mode: heat_pump
+    alias: 'Tank: heat_pump mode'
+    target:
+      entity_id: water_heater.altherma
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.sww_tank_test
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.sww_tank_test
+  - service: water_heater.set_operation_mode
+    data:
+      operation_mode: 'off'
+    alias: 'Tank: off'
+    target:
+      entity_id: water_heater.altherma
+  mode: single
+- id: '1680765736851'
+  alias: 'SWW: Opwarmen op zonnepanelen'
+  description: Zorgt ervoor dat de SWW tank opgewarmd wordt als er voldoende opwekking
+    is
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.warmtepomp_watertanktemperature
+    enabled: true
+  - platform: numeric_state
+    entity_id: sensor.warmtepomp_watertanktemperature
+    above: 44
+    below: 52
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.warmtepomp_watertanktemperature
+    below: 52
+    enabled: true
+  - condition: numeric_state
+    entity_id: sensor.warmtepomp_watertanktemperature
+    enabled: true
+    above: 44
+  - condition: state
+    entity_id: water_heater.altherma
+    state: 'off'
+  action:
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.solaredge_current_power
+      below: 2
+    then:
+    - wait_for_trigger:
+      - platform: numeric_state
+        entity_id: sensor.solaredge_current_power
+        above: 2
+  - service: water_heater.set_operation_mode
+    data:
+      operation_mode: heat_pump
+    alias: 'Tank: heat_pump mode'
+    target:
+      entity_id: water_heater.altherma
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.sww_tank_test
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.sww_tank_test
+  - service: water_heater.set_operation_mode
+    data:
+      operation_mode: 'off'
+    alias: 'Tank: off'
+    target:
+      entity_id: water_heater.altherma
+  mode: single
+- id: '1681897199433'
+  alias: 'Stroomprijs negatief: notificatie'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.electricity_price_thuis
+    below: 0
+  condition: []
+  action:
+  - service: notify.all_ios_devices
+    data:
+      message: ⚡Stroomprijs is negatief, we krijgen geld als we stroom gebruiken
+  mode: single
+- id: '1686597097524'
+  alias: 'Slaapkamer: ramen open'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: weather.knmi_thuis
+    attribute: temperature
+    below: sensor.warmtepomp_roomtemperature
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+  condition:
+  - condition: numeric_state
+    entity_id: weather.knmi_thuis
+    attribute: temperature
+    above: 22
+  action:
+  - service: notify.all_ios_devices
+    data:
+      message: "Ramen open om af te koelen! \U0001F4A8"
+  mode: single
+- id: '1688810024731'
+  alias: Vakantie mode
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -01:00:00
+  condition: []
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.woonkamer_avond
+    metadata: {}
+  - wait_for_trigger:
+    - platform: time
+      at: 00:00:00
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: all
+  mode: single
+- id: '1694012399155'
+  alias: 'Werkkamer: lamp aan '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.kantoor_bewegingssensor_occupancy
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: light.kantoor_plafondlamp
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.kantoor_bewegingssensor_illuminance_lux
+      below: 20
+      enabled: true
+  action:
+  - if:
+    - condition: sun
+      after: sunset
+      before: sunrise
+    then:
+    - service: light.turn_on
+      data:
+        brightness_pct: 40
+      target:
+        entity_id: light.kantoor_plafondlamp
+    else:
+    - service: light.turn_on
+      data:
+        brightness_pct: 100
+      target:
+        entity_id: light.kantoor_plafondlamp
+  - parallel:
+    - wait_for_trigger:
+      - platform: state
+        entity_id:
+        - binary_sensor.kantoor_bewegingssensor_occupancy
+        to: 'off'
+    - wait_for_trigger:
+      - platform: state
+        entity_id:
+        - binary_sensor.bureau_in_gebruik
+        to: 'off'
+        for:
+          hours: 0
+          minutes: 3
+          seconds: 0
+      continue_on_timeout: false
+    enabled: false
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.kantoor_plafondlamp
+    enabled: false
+  mode: restart
+- id: '1694012513215'
+  alias: 'Werkkamer: lamp uit (lux)'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.kantoor_bewegingssensor_illuminance_lux
+    above: input_number.lux_kantoor
+  condition:
+  - condition: state
+    entity_id: light.kantoor_plafondlamp
+    state: 'on'
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.kantoor_plafondlamp
+  mode: restart
+- id: '1694531451475'
+  alias: 'Badkamer: nachtlamp'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.badkamer_aanwezigheid
+    id: aanwezig
+    to: 'on'
+  - platform: state
+    entity_id:
+    - binary_sensor.badkamer_aanwezigheid
+    id: afwezig
+    to: 'off'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.iedereen_slaapt
+      state: 'on'
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.iemand_slaapt
+        state: 'on'
+      - condition: time
+        after: 00:00:00
+        before: 07:00:00
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - aanwezig
+      sequence:
+      - service: light.turn_on
+        data:
+          color_temp: 500
+          brightness_pct: 10
+        target:
+          entity_id: light.badkamer
+    - conditions:
+      - condition: trigger
+        id:
+        - afwezig
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.badkamer
+        data: {}
+  mode: single
+- id: '1694595241225'
+  alias: 'Avondscène: uit als het licht is'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.is_donker
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  condition: []
+  action:
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.is_donker
+      to: 'off'
+    alias: Wacht tot het niet meer donker is
+    enabled: false
+  - service: scene.turn_on
+    target:
+      entity_id: scene.woonkamer_avond_uit
+    metadata: {}
+  mode: single
+- id: '1695126535181'
+  alias: 'Woonkamer: knoppen'
+  description: ''
+  use_blueprint:
+    path: FunkeyFlo/ROB_200-007-0.yaml
+    input:
+      remote: sensor.woonkamer_knoppen_action
+      on_button_1_short:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.woonkamer_ochtend
+        metadata: {}
+      on_button_2_short:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.woonkamer_avond
+        metadata: {}
+      off_button_1_short:
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.woonkamer_eettafel
+      off_button_1_hold:
+      - service: light.turn_on
+        data:
+          brightness: 255
+        target:
+          entity_id: light.woonkamer_eettafel
+      off_button_3_short:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id:
+          - light.aanrecht
+          - light.kookeiland
+      on_button_4_short:
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.woonkamer_plafondlamp
+      off_button_4_short:
+      - service: light.turn_off
+        data: {}
+        target:
+          area_id:
+          - woonkamer
+          - keuken
+      on_button_3_short:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.keuken_koken
+        metadata: {}
+- id: '1695674374071'
+  alias: 'Werkkamer: lamp uit'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.kantoor_bewegingssensor_illuminance_lux
+    above: input_number.lux_kantoor
+  - platform: template
+    value_template: '{{ states(''binary_sensor.bureau_in_gebruik'') == "off" and states(''binary_sensor.kantoor_bewegingssensor_occupancy'')
+      == "off" }}'
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: light.kantoor_plafondlamp
+    state: 'on'
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.kantoor_plafondlamp
+    enabled: true
+  mode: restart
+- id: '1697981162333'
+  alias: 'Roborock: iedere dag'
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:00:00
+  condition: []
+  action:
+  - service: vacuum.start
+    data: {}
+    target:
+      entity_id: vacuum.roborock_s7_maxv
+  mode: single
+- id: '1699083977073'
+  alias: 'Stoner: automatisch uit'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.stoner
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 30
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.stoner
+  mode: single

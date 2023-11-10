@@ -1,0 +1,316 @@
+- sensor:
+  - name: "Energieverbruik (totaal)"
+    unique_id: power_consumption_total
+    state: "{{ (states('sensor.p1_meter_total_power_import_2')|float - states('sensor.p1_meter_total_power_export_2')|float)|round(1) }}"
+    unit_of_measurement: "kWh"
+    state_class: total_increasing
+    device_class: energy
+
+  - name: "Activiteit Femke"
+    unique_id: activity_femke
+    state: >
+      {%- if is_state("sensor.iphone_van_femke_ssid", "FeSie") or is_state("device_tracker.iphone_van_femke", "home") -%}
+          Thuis      
+      {%- elif is_state("sensor.iphone_van_femke_ssid", "Visio Medewerkers") -%}
+          Werk
+      {%- elif is_state("sensor.iphone_van_femke_activity", "Automotive") or is_state("sensor.iphone_van_femke_activity", "Unknown") -%}
+          Onderweg
+      {%- else -%}
+          Niet thuis
+      {%- endif -%}
+
+  - name: "Activiteit Sietse"
+    unique_id: activity_sietse
+    state: >
+      {%- if is_state("sensor.iphone_van_sietse_ssid", "FeSie") or is_state("device_tracker.iphone_van_sietse", "home") -%}
+          Thuis
+      {%- elif is_state("sensor.iphone_van_sietse_activity", "Automotive") or is_state("sensor.iphone_van_sietse_activity", "Unknown") -%}
+          Onderweg
+      {%- else -%}
+          Niet thuis
+      {%- endif -%}
+
+  - name: "Discharge pipe temperature"
+    unique_id: warmtepomp_discharge_pipe_temperature
+    state: "{{ state_attr('sensor.althermasensors','Discharge pipe temp.') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Operation mode"
+    unique_id: warmtepomp_operation_mode
+    state: "{{ state_attr('sensor.althermasensors','Operation Mode') }}"
+  - name: "I/O Mode"
+    unique_id: warmtepomp_io_mode
+    state: "{{ state_attr('sensor.althermasensors','I/U operation mode') }}"
+  - name: "Current mode"
+    unique_id: warmtepomp_current_mode
+    state: "{% if is_state('sensor.warmtepomp_thermostat', 'ON') %} {{ state_attr('sensor.althermasensors','Operation Mode') }} {% else %} Uit {% endif %}"
+  - name: "Booster thermal protection"
+    unique_id: warmtepomp_booster_thermal_protection
+    state: "{{ state_attr('sensor.althermasensors','Thermal protector (Q1L) BUH') }}"
+  - name: "Back-up thermal protection"
+    unique_id: warmtepomp_backup_thermal_protection
+    state: "{{ state_attr('sensor.althermasensors','Thermal protector BSH') }}"
+  - name: "Watertanktemperature"
+    unique_id: warmtepomp_watertank_temperature
+    state: "{{ state_attr('sensor.althermasensors','DHW tank temp. (R5T)') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Flowpump"
+    unique_id: warmtepomp_flow_pump
+    state: "{{ state_attr('sensor.althermasensors','Flow sensor (l/min)') }}"
+    unit_of_measurement: "l/min"
+    state_class: measurement
+  - name: "Water flow switch"
+    unique_id: warmtepomp_water_flow_switch
+    state: "{{ state_attr('sensor.althermasensors','Water flow switch') }}"
+  - name: "Water pump operation"
+    unique_id: warmtepomp_water_pump_operation
+    state: "{{ state_attr('sensor.althermasensors','Water pump operation') }}"
+  - name: "Water pump level (original)"
+    unique_id: warmtepomp_water_pump_level
+    state: "{{ state_attr('sensor.althermasensors','Water pump signal (0:max-100:stop)') }}"
+    unit_of_measurement: "%"
+    state_class: measurement
+  - name: "Water pump level"
+    unique_id: warmtepomp_water_pump_level_reversed
+    state: "{{ 100 - int(state_attr('sensor.althermasensors','Water pump signal (0:max-100:stop)')) }}"
+    unit_of_measurement: "%"
+    state_class: measurement
+  - name: "Reheat"
+    unique_id: warmtepomp_reheat
+    state: "{{ state_attr('sensor.althermasensors','Reheat ON/OFF') }}"
+  - name: "Circulation pump"
+    unique_id: warmtepomp_circulation_pump
+    state: "{{ state_attr('sensor.althermasensors','Circulation pump operation') }}"
+  - name: "Target delta T Heating"
+    unique_id: warmtepomp_target_delta_t_heating
+    state: "{{ state_attr('sensor.althermasensors','Target delta T heating') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Target delta T Cooling"
+    unique_id: warmtepomp_target_delta_t_cooling
+    state: "{{ state_attr('sensor.althermasensors','Target delta T cooling') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Outdoor temperature"
+    unique_id: warmtepomp_outdoor_temperature
+    state: "{{ state_attr('sensor.althermasensors','Outdoor air temp.(R1T)') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Thermostat"
+    unique_id: warmtepomp_thermostat
+    state: "{{ state_attr('sensor.althermasensors','Thermostat ON/OFF') }}"
+  - name: "Defrost operation"
+    unique_id: warmtepomp_defrost_operation
+    state: "{{ state_attr('sensor.althermasensors','Defrost Operation') }}"
+  - name: "Back-up heater"
+    unique_id: warmtepomp_backup_heater_step1
+    state: "{{ state_attr('sensor.althermasensors','BUH Step1') }}"
+  - name: "Watertank setpoint"
+    unique_id: warmtepomp_watertank_setpoint
+    state: "{{ state_attr('sensor.althermasensors','DHW setpoint') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Room temperature setpoint"
+    unique_id: warmtepomp_room_temperature_setpoint
+    state: "{{ state_attr('sensor.althermasensors','RT setpoint') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Water leaving temperature"
+    unique_id: warmtepomp_water_leaving_temperature
+    state: "{{ state_attr('sensor.althermasensors','Leaving water temp. before BUH (R1T)') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Water inlet temperature"
+    unique_id: warmtepomp_water_inlet_temperature
+    state: "{{ state_attr('sensor.althermasensors','Inlet water temp.(R4T)') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Heat exchanger temperature"
+    unique_id: warmtepomp_heat_exchanger_temperature
+    state: "{{ state_attr('sensor.althermasensors','Heat exchanger mid-temp.') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Refrigerator liquid temperature"
+    unique_id: warmtepomp_regrigerator_liquid_temperature
+    state: "{{ state_attr('sensor.althermasensors','Refrig. Temp. liquid side (R3T)') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Water pressure"
+    unique_id: warmtepomp_water_pressure
+    state: "{{ state_attr('sensor.althermasensors','Water pressure') }}"
+    unit_of_measurement: "bar"
+    state_class: measurement
+  - name: "Leaving water setpoint"
+    unique_id: warmtepomp_leaving_water_setpoint
+    state: "{{ state_attr('sensor.althermasensors','LW setpoint (main)') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Roomtemperature"
+    unique_id: warmtepomp_room_temperature
+    state: "{{ state_attr('sensor.althermasensors','Indoor ambient temp. (R1T)') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name: "Inverter current"
+    unique_id: warmtepomp_inverter_current
+    state: "{{ state_attr('sensor.althermasensors','INV primary current (A)') }}"
+    unit_of_measurement: "A"
+    state_class: measurement
+  - name: "Inverter frequency"
+    unique_id: warmtepomp_inverter_frequency
+    state: "{{ state_attr('sensor.althermasensors','INV frequency (rps)') }}"
+    unit_of_measurement: "rps"
+    state_class: measurement
+  - name: "Voltage"
+    unique_id: warmtepomp_voltage
+    state: "{{ state_attr('sensor.althermasensors','Voltage (N-phase) (V)') }}"
+    unit_of_measurement: "V"
+    state_class: measurement
+  - name: "Inverter usage"
+    unique_id: warmtepomp_inverter_usage
+    state: "{% if is_state_attr('sensor.althermasensors', 'Thermostat ON/OFF', 'ON') %} {{ (states('sensor.warmtepomp_inverter_current')|float * 230 | float) }} {% else %} 0 {% endif %}"
+    unit_of_measurement: "W"
+    state_class: measurement
+  - name: "Heat yield"
+    unique_id: warmtepomp_heat_yield
+    state: "{% if is_state_attr('sensor.althermasensors', 'Thermostat ON/OFF', 'ON') %} {{ (states('sensor.warmtepomp_inverter_usage')|float * states('sensor.warmtepomp_cop')| float)|round|int }} {% else %} 0 {% endif %}"
+    unit_of_measurement: "W"
+    state_class: measurement
+
+  - name : "Low noise control"
+    unique_id: warmtepomp_low_noise_control
+    state: "{{ state_attr('sensor.althermasensors', 'Low noise control') }}"
+    state_class: measurement
+  - name : "Suction pipe temperature"
+    unique_id: warmtepomp_suction_pipe_temperature
+    state: "{{ state_attr('sensor.althermasensors', 'Suction pipe temp.') }}"
+    unit_of_measurement: "°C"
+    state_class: measurement
+  - name : "Inverter current secondary"
+    unique_id: warmtepomp_inverter_current_secondary
+    state: "{{ state_attr('sensor.althermasensors', 'INV secondary current (A)') }}"
+    unit_of_measurement: "A"
+    state_class: measurement
+  - name : "Pressure sensor"
+    unique_id: warmtepomp_pressure_sensor
+    state: "{{ state_attr('sensor.althermasensors', 'Pressure sensor') }}"
+    state_class: measurement
+  - name : "STD Compressor 1"
+    unique_id: warmtepomp_std_compressor_1
+    state: "{{ state_attr('sensor.althermasensors', 'STD Compressor 1') }}"
+    state_class: measurement 
+  - name : "Freeze protection"
+    unique_id: warmtepomp_freeze_protection
+    state: "{{ state_attr('sensor.althermasensors', 'Freeze Protection') }}"
+    state_class: measurement 
+  - name : "Silent mode"
+    unique_id: warmtepomp_silent_mode
+    state: "{{ state_attr('sensor.althermasensors', 'Silent Mode') }}"
+    state_class: measurement 
+
+  - name: "ESPAltherma last update"
+    unique_id: warmtepomp_espaltherma_last_update
+    state: "{{ as_timestamp(states.sensor.althermasensors.last_updated) | timestamp_custom('%H:%M:%S',True) }}"
+  - name: "COP"
+    unique_id: warmtepomp_cop
+    unit_of_measurement: "COP"
+    state_class: measurement
+    state: >-
+      {% if states('sensor.warmtepomp_thermostat') == 'OFF'  %}
+      {% set cop = 0.0 | float %} 
+      {% elif states('sensor.warmtepomp_thermostat') == 'ON' 
+        or states('sensor.warmtepomp_inverter_usage') |float >90 %}
+      {% set t1 = states('sensor.warmtepomp_water_leaving_temperature') | float %}
+      {% set t2 = states('sensor.warmtepomp_water_inlet_temperature') | float %}
+      {% set f = states('sensor.warmtepomp_flowpump') | float %}
+      {% set pw = states('sensor.warmtepomp_inverter_usage') | float %}
+      {% set pwg = ((t1 - t2)*f) / 60 * 4184 | float %}
+      {% set cop = pwg / pw | float  %}
+        {% endif %}
+      {% if cop != 0.0 %}
+      {{ cop | float | round(1) }}
+        {% else %}
+      {% endif %}
+  - name: "Working COP"
+    unique_id: warmtepomp_working_cop
+    unit_of_measurement: "COP"
+    state_class: measurement
+    state: >-
+      {% if states('sensor.warmtepomp_thermostat') == 'OFF'  %}
+      {% set cop = 0.0 | float %} 
+      {% elif states('sensor.warmtepomp_thermostat') == 'ON' 
+        or states('sensor.warmtepomp_inverter_usage') |float >90 %}
+      {% set t1 = states('sensor.warmtepomp_water_leaving_temperature') | float %}
+      {% set t2 = states('sensor.warmtepomp_water_inlet_temperature') | float %}
+      {% set f = states('sensor.warmtepomp_flowpump') | float %}
+      {% set pw = states('sensor.warmtepomp_inverter_usage') | float %}
+      {% set pwg = ((t1 - t2)*f) / 60 * 4184 | float %}
+      {% set cop = pwg / pw | float  %}
+        {% endif %}
+      {% if cop != 0.0 %}
+      {{ cop | float | round(1) }}
+        {% else %}
+      {% endif %}
+
+  - name: "Water ∆T"
+    unique_id: warmtepomp_water_delta_t
+    unit_of_measurement: "°C"
+    state_class: measurement
+    state: >-
+      {{ (states('sensor.warmtepomp_water_leaving_temperature')|float - states('sensor.warmtepomp_water_inlet_temperature') | float)|round(1) }}
+
+- binary_sensor:
+  - name: "Iemand thuis"
+    unique_id: iemand_thuis
+    icon: >-
+      {% if is_state('binary_sensor.iemand_thuis','on') %}
+        mdi:home-account
+      {% else %}
+        mdi:home-outline
+      {% endif %}
+    state: >
+      {% if is_state('person.sietse','home') or is_state('person.femke','home') %}
+      true 
+      {% else %}
+      false
+      {% endif %}
+
+  - name: "Wasmachine status"
+    unique_id: wasmachine_status
+    delay_off:
+        minutes: 5
+    state: >
+        {{ states('sensor.washok_stekker_wasmachine_power')|float > 20 }}
+
+  - name: "nordpool_least_expensive_8_hours"
+    state: >-
+      {% set m = (state_attr('sensor.nordpool_kwh_nl_eur_3_09_0', 'raw_today') | map(attribute='value') | sort | list)[:7] | list %}
+      {% set c = states('sensor.electricity_price_thuis') %}
+      {{ c | float <= m | max if m and c | is_number else false }}
+  
+  - name: "Electricity price cheap or normal"
+    unique_id: electricity_price_cheap_or_normal
+    icon: mdi:currency-eur
+    state: >-
+      {% if state_attr('sensor.electricity_price_thuis', 'price_level') == "CHEAP" %}
+      true
+      {% elif state_attr('sensor.electricity_price_thuis', 'price_level') == "NORMAL" %}
+      true
+      {% else %}
+      false
+      {% endif %}
+
+- trigger:
+    - platform: numeric_state
+      entity_id: sensor.warmtepomp_watertanktemperature
+      above: 55
+  sensor:
+    - name: "Desinfectie"
+      state: >
+        {% if  today_at('5:00') < now() < today_at('23:30') %}
+          {{ this.state }}
+        {% else %}
+          {{ now().strftime('%d-%m-%Y %H:%M') }}
+        {% endif %}
+
+# END Altherma

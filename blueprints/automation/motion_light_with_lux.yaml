@@ -1,0 +1,167 @@
+blueprint:
+  name: Motion-activated light with lux sensor
+  description: Turn a light on based on detected motion and a lux sensor
+  domain: automation
+  input:
+    motion_sensor:
+      name: Motion Sensor
+      description: This sensor will be synchronized with the light.
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+          multiple: false
+    light_sensor:
+      name: Illuminance Sensor
+      selector:
+        entity:
+          domain: sensor
+          device_class: illuminance
+          multiple: false
+    illuminance_level:
+      name: Max Illuminance
+      description: Maximal illuminance level in lux. If illuminance is higher, light
+        will not be enabled
+      default: 600
+      selector:
+        number:
+          min: 0.0
+          max: 500.0
+          unit_of_measurement: lux
+          mode: slider
+          step: 5.0
+    illuminance_level_input_number:
+      name: Max Illuminance (input number)
+      default:
+      description: Input number that contains maximum illuminance level in lux. If illuminance is higher, light
+        will not be enabled. This takes precedence over the 'Max Illuminance' setting.
+      selector:
+        entity:
+          domain: input_number
+    light_target:
+      name: Lights
+      description: The lights to keep in sync.
+      selector:
+        target:
+          entity:
+            domain: light
+    brightness_sun_up:
+      name: Brightness (sun up)
+      description: Brightness of lights when the sun is up
+      default: 255
+      selector:
+        number:
+          min: 0.0
+          max: 255.0
+          unit_of_measurement: brightness
+          mode: slider
+          step: 5.0
+    brightness_sun_down:
+      name: Brightness (sun down)
+      description: Brightness of lights when the sun is down
+      default: 255
+      selector:
+        number:
+          min: 0.0
+          max: 255.0
+          unit_of_measurement: brightness
+          mode: slider
+          step: 5.0
+    no_motion_wait:
+      name: Wait time
+      description: Time to leave the light on after last motion is detected.
+      default: 120
+      selector:
+        number:
+          min: 0.0
+          max: 3600.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+    enable_nighttime:
+      name: Enable in nighttime
+      description: Whether to turn on the lights between 00:00 and 07:00
+      default: true
+      selector:
+        boolean:
+    enable_motion_sensor:
+      name: Enable motion sensor
+      description: Input boolean that determines whether the automation should be activated.
+      default: 'none'
+      selector:
+        entity:
+          domain: input_boolean
+          multiple: false
+
+variables:
+  enable_motion_detection: !input enable_motion_sensor
+  enable_nighttime: !input enable_nighttime
+  light_sensor_entity: !input light_sensor
+  motion_sensor_entity: !input motion_sensor
+  max_illuminance_raw: !input illuminance_level
+  max_illuminance_entity: !input illuminance_level_input_number
+
+trigger:
+  - platform: state
+    entity_id: !input motion_sensor
+    from: "off"
+    to: "on"
+  - platform: template
+    value_template: >
+      {% set max_illuminance = max_illuminance_raw %}
+      {% if max_illuminance_entity != 'None' %}
+      {% set max_illuminance = states[max_illuminance_entity].state %}
+      {% endif %}
+      {{ max_illuminance | int > states[light_sensor_entity].state | int }}
+condition:
+  - condition: template
+    value_template: "{{ enable_motion_detection == 'none' or (states[enable_motion_detection].state == 'on') }}"
+  - condition: or
+    conditions:
+      - condition: and
+        conditions:
+          - condition: template
+            value_template: "{{ enable_nighttime == false }}"
+          - condition: time
+            after: "07:00:00"
+      - condition: template
+        value_template: "{{ enable_nighttime }}"
+      - condition: state
+        entity_id: binary_sensor.iemand_slaapt
+        state: "off"
+  - condition: template
+    value_template: >
+      {% set max_illuminance = max_illuminance_raw %}
+      {% if max_illuminance_entity != 'None' %}
+      {% set max_illuminance = states[max_illuminance_entity].state %}
+      {% endif %}
+      {{ max_illuminance | int > states[light_sensor_entity].state | int }}
+  - condition: state
+    entity_id: !input motion_sensor
+    state: "on"
+action:
+  - if:
+      - condition: state
+        entity_id: binary_sensor.is_donker
+        state: "on"
+    then:
+      - service: light.turn_on
+        data:
+          brightness: !input brightness_sun_down
+        target: !input light_target
+    else:
+      - service: light.turn_on
+        data:
+          brightness: !input brightness_sun_up
+        target: !input light_target
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input motion_sensor
+        from: "on"
+        to: "off"
+  - delay: !input no_motion_wait
+  - service: light.turn_off
+    data: {}
+    target: !input light_target
+mode: restart
+

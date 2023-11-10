@@ -1,0 +1,42 @@
+!.gitignore
+!*.md
+!LICENSE
+
+# Ignore Folders
+.vscode
+.cloud
+.storage
+.google_api
+.inactive
+tts
+image
+custom_components/*/*
+files
+zz_test
+dev
+www/*
+packages/*/google_cast
+zigbee2mqtt
+
+# Add these anyway
+!www/community
+
+# Ignore Extensions
+*.db
+*.old
+*.log
+*.conf
+*.db-shm
+*.db-wal
+*.csv
+*.log.*
+
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+.google.token
+google_calendars.yaml
+.mercedesme-token-cache
+daikin_data.json
+daikin_puredata.json
