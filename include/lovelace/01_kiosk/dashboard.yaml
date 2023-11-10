@@ -1,10 +1,10 @@
-title: My Awesome Home
-views:
-    # View tab title.
-  - title: Example
-    cards:
-        # The markdown card will render markdown text.
-      - type: markdown
-        title: Dashboard
-        content: >
-          Welcome to your **dashboard**.
+title: Kiosk
+kiosk_mode:
+  admin_settings:
+    hide_header: false
+    hide_sidebar: false
+    hide_menu_button: true
+  non_admin_settings:
+    kiosk: true
+    ignore_entity_settings: true
+views: !include_dir_list /config/include/lovelace/01_kiosk/views/
