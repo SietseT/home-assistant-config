@@ -1,0 +1,30 @@
+type: grid
+title: Lampen
+square: false
+columns: 2
+cards:
+  - type: custom:mushroom-light-card
+    entity: light.woonkamer_eettafel
+    name: Eettafel
+    show_brightness_control: true
+    show_color_temp_control: true
+    collapsible_controls: true
+    fill_container: true
+  - type: custom:mushroom-light-card
+    entity: light.woonkamer_plafondlamp
+    name: Plafondlamp
+    show_brightness_control: true
+    collapsible_controls: true
+    fill_container: true
+  - type: custom:mushroom-light-card
+    entity: light.woonkamer_voetlamp
+    name: Voetlamp
+    show_brightness_control: true
+    collapsible_controls: true
+    fill_container: true
+  - type: custom:mushroom-light-card
+    entity: light.woonkamer_sidetable
+    name: Sidetable
+    show_brightness_control: true
+    collapsible_controls: true
+    fill_container: true

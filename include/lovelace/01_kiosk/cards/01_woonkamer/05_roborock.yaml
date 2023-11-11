@@ -1,0 +1,27 @@
+type: grid
+title: Roborock
+square: false
+columns: 1
+cards:
+  - type: custom:mushroom-vacuum-card
+    entity: vacuum.roborock_s7_maxv
+    commands:
+      - on_off
+      - start_pause
+      - stop
+      - return_home
+    icon_animation: true
+    fill_container: false
+    layout: horizontal
+    name: Roborock
+    tap_action:
+      action: more-info
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: vacuum.roborock_s7_maxv
+        state: cleaning
+    card:
+      type: custom:mushroom-entity-card
+      entity: sensor.roborock_s7_maxv_cleaning_time
+      name: Huidige schoonmaaktijd

@@ -736,8 +736,8 @@
 
       true
 
-      {% elif state_attr(''sensor.electricity_price_thuis'', ''price_level'')
-      == "NORMAL" %}
+      {% elif state_attr(''sensor.electricity_price_thuis'', ''price_level'') == "NORMAL"
+      %}
 
       true
 
@@ -1153,4 +1153,19 @@
     data: {}
     target:
       entity_id: switch.stoner
+  mode: single
+- id: '1699709128758'
+  alias: 'Roborock: ventilator snelheid'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_select.roborock_ventilator_snelheid
+  condition: []
+  action:
+  - service: vacuum.set_fan_speed
+    data:
+      fan_speed: '{{ states(''input_select.roborock_ventilator_snelheid'') }}'
+    target:
+      entity_id: vacuum.roborock_s7_maxv
   mode: single

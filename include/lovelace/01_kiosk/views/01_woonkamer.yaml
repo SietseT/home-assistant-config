@@ -1,0 +1,7 @@
+title: Woonkamer
+path: woonkamer
+subview: true
+back_path: /lovelace-kiosk/home
+icon: mdi:sofa
+badges: []
+cards: !include_dir_list /config/include/lovelace/01_kiosk/cards/01_woonkamer/

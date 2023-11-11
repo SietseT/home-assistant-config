@@ -1,0 +1,21 @@
+type: grid
+title: Verwarming
+square: false
+columns: 1
+cards:
+  - type: custom:mushroom-climate-card
+    entity: climate.altherma
+    name: Thermostaat
+    show_temperature_control: true
+    collapsible_controls: true
+    hvac_modes:
+      - cool
+      - heat
+    tap_action:
+      action: more-info
+  - graph: line
+    type: sensor
+    entity: sensor.woonkamer_temperatuur
+    detail: 2
+    hours_to_show: 24
+    name: Temperatuur
