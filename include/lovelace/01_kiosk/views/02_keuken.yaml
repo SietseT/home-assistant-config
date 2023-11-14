@@ -1,0 +1,8 @@
+title: Keuken
+theme: mushroom_no_borders
+path: keuken
+subview: true
+back_path: /lovelace-kiosk/home
+icon: mdi:countertop
+badges: []
+cards: !include_dir_list /config/include/lovelace/01_kiosk/cards/02_keuken/

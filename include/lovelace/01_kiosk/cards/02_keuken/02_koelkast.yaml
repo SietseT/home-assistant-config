@@ -1,0 +1,8 @@
+type: vertical-stack
+title: Koelkast
+cards:
+  - type: custom:mini-graph-card
+    hours_to_show: 24
+    entities:
+      - entity: sensor.keuken_koelkast_temperature
+        name: Temperatuur
