@@ -13,10 +13,11 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
+      color_mode: brightness
+      brightness: 199
+      effect:
       friendly_name: Woonkamer voetlamp
       supported_features: 44
-      color_mode: brightness
-      brightness: 200
       state: 'on'
     light.woonkamer_plafondlamp:
       effect_list:
@@ -30,15 +31,18 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
+      color_mode:
+      brightness:
+      effect:
       friendly_name: Woonkamer plafondlamp
       supported_features: 44
       state: 'off'
     light.woonkamer_wandlamp:
       supported_color_modes:
       - onoff
+      color_mode: onoff
       friendly_name: Woonkamer wandlamp
       supported_features: 0
-      color_mode: onoff
       state: 'on'
     light.woonkamer_sidetable:
       min_color_temp_kelvin: 2202
@@ -56,8 +60,6 @@
       - stop_hue_effect
       supported_color_modes:
       - color_temp
-      friendly_name: Woonkamer sidetable
-      supported_features: 44
       color_mode: color_temp
       brightness: 117
       color_temp_kelvin: 2202
@@ -72,20 +74,61 @@
       xy_color:
       - 0.579
       - 0.388
+      effect:
+      friendly_name: Woonkamer sidetable
+      supported_features: 44
       state: 'on'
     light.keuken_aap:
       supported_color_modes:
       - onoff
+      color_mode: onoff
       friendly_name: Keuken aap
       supported_features: 0
-      color_mode: onoff
       state: 'on'
     light.keuken_kookeiland_ledstrip:
       supported_color_modes:
       - onoff
+      color_mode: onoff
       friendly_name: Keuken kookeiland ledstrip
       supported_features: 0
-      color_mode: onoff
+      state: 'on'
+    light.tuin:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - channel_change
+      - finish_effect
+      - okay
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - onoff
+      - xy
+      color_mode: xy
+      brightness: 169
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      - 91.902
+      - 80.392
+      rgb_color:
+      - 146
+      - 255
+      - 50
+      xy_color:
+      - 0.290667
+      - 0.624
+      effect:
+      entity_id:
+      - light.tuin_wand_huis
+      - light.tuin_verlichting
+      icon: mdi:lightbulb-group
+      friendly_name: Tuin
+      supported_features: 44
       state: 'on'
   icon: mdi:lightbulb-night
   metadata:
@@ -100,6 +143,8 @@
     light.keuken_aap:
       entity_only: true
     light.keuken_kookeiland_ledstrip:
+      entity_only: true
+    light.tuin:
       entity_only: true
 - id: '1669653657868'
   name: 'Woonkamer: ochtend'
@@ -436,6 +481,8 @@
     light.woonkamer_eettafel:
       supported_color_modes:
       - brightness
+      color_mode:
+      brightness:
       entity_id:
       - light.xxl_liva_zwart_ombre_2
       - light.xxl_liva_zwart_ombre_4
@@ -458,6 +505,9 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
+      color_mode:
+      brightness:
+      effect:
       friendly_name: Woonkamer voetlamp
       supported_features: 44
       state: 'off'
@@ -473,12 +523,16 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
+      color_mode:
+      brightness:
+      effect:
       friendly_name: Woonkamer plafondlamp
       supported_features: 44
       state: 'off'
     light.woonkamer_wandlamp:
       supported_color_modes:
       - onoff
+      color_mode:
       friendly_name: Woonkamer wandlamp
       supported_features: 0
       state: 'off'
@@ -498,17 +552,64 @@
       - stop_hue_effect
       supported_color_modes:
       - color_temp
+      color_mode: color_temp
+      brightness: 117
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      effect:
       friendly_name: Woonkamer sidetable
       supported_features: 44
-      state: 'off'
+      state: 'on'
     light.keuken_aap:
       supported_color_modes:
       - onoff
+      color_mode:
       friendly_name: Keuken aap
       supported_features: 0
       state: 'off'
     switch.keuken_eiland_ledstrip:
       friendly_name: Keuken kookeiland ledstrip
+      state: 'off'
+    light.tuin:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - channel_change
+      - finish_effect
+      - okay
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - onoff
+      - xy
+      color_mode:
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
+      effect:
+      entity_id:
+      - light.tuin_wand_huis
+      - light.tuin_verlichting
+      icon: mdi:lightbulb-group
+      friendly_name: Tuin
+      supported_features: 44
       state: 'off'
   icon: mdi:lightbulb-night
   metadata:
@@ -525,4 +626,6 @@
     light.keuken_aap:
       entity_only: true
     switch.keuken_eiland_ledstrip:
+      entity_only: true
+    light.tuin:
       entity_only: true

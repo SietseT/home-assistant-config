@@ -1,4 +1,5 @@
 icon: mdi:home
+theme: mushroom_no_borders
 title: Grid layout
 type: custom:grid-layout
 path: home

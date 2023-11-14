@@ -1,0 +1,12 @@
+>
+  {% set battery_level = states(entity) | int // 10 * 10 %}   
+  {% set charging_state = states('sensor.s22_ultra_charger_type') %}   
+  {% set is_charging = is_state('binary_sensor.s22_ultra_is_charging', 'on') | iif(True, False) %}  
+  {% set map = {"none":"", "ac":"charging-", "wireless":"charging-wireless-"} %}  
+  {% set charging = map[states('sensor.s22_ultra_charger_type')] %} 
+  {% if battery_level == 100 and is_charging == True %} mdi:battery-charging   
+  {% elif battery_level == 100 %} mdi:battery      
+  {% elif battery_level >= 10 %} mdi:battery-{{charging}}{{battery_level}}    
+  {% elif battery_level >= 0 %} mdi:battery-{{charging}}outline     
+  {% else %} mdi:battery-unknown     
+  {% endif %}

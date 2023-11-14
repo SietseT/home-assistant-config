@@ -1,0 +1,4 @@
+style: |
+  ha-card {
+    border: none;
+  }

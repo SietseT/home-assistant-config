@@ -44,3 +44,5 @@ tts:
     service_name: google_translate_say
 
 lovelace: !include /config/include/configuration/lovelace.yaml
+frontend:
+  themes: !include_dir_merge_named /config/include/lovelace/00_general/03_themes

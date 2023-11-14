@@ -1,0 +1,11 @@
+>
+  {% set percentage = states(entity) | int %}
+  {% set r, g, b = 0, 0, 0 %}
+  {% if (percentage <= 51) %}
+    {% set r = 255 %}
+    {% set g = (5.0 * percentage) | round | int %}
+  {% else %}
+    {% set g = 255 %}
+    {% set r = (505 - 4.89 * percentage) | round | int %}
+  {% endif %}
+  {{ "#%0x" | format( r * 0x10000 + g * 0x100 + b * 0x1 ) }}
