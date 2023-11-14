@@ -10,7 +10,7 @@ card:
   cards:
     - type: custom:mushroom-template-card
       entity: sensor.oven_oven_set_point
-      icon: mdi:knob
+      icon: mdi:gauge
       icon_color: blue
       primary: Temperatuur instelling
       secondary: "{{ states(entity) }} °C"

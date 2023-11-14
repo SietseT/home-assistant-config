@@ -1,0 +1,8 @@
+title: Hal
+theme: mushroom_no_borders
+path: hal
+subview: true
+back_path: /lovelace-kiosk/home
+icon: mdi:coat-rack
+badges: []
+cards: !include_dir_list /config/include/lovelace/01_kiosk/cards/03_hal/
