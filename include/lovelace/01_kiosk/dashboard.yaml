@@ -6,7 +6,7 @@ kiosk_mode:
     hide_menu_button: true
   non_admin_settings:
     hide_header: false
-    hide_sidebar: true
+    hide_sidebar: false
     hide_menu_button: false
     ignore_entity_settings: true
 views: !include_dir_list /config/include/lovelace/01_kiosk/views/

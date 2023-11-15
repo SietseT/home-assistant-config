@@ -1,5 +1,4 @@
 title: Hal
-theme: mushroom_no_borders
 path: hal
 subview: true
 back_path: /lovelace-kiosk/home

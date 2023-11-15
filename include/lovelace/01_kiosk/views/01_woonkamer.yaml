@@ -1,5 +1,4 @@
 title: Woonkamer
-theme: mushroom_no_borders
 path: woonkamer
 subview: true
 back_path: /lovelace-kiosk/home

@@ -1,5 +1,4 @@
 title: Keuken
-theme: mushroom_no_borders
 path: keuken
 subview: true
 back_path: /lovelace-kiosk/home
