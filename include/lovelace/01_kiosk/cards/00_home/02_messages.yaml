@@ -1,0 +1,8 @@
+type: vertical-stack
+view_layout:
+  grid-area: messages
+cards:
+  - type: grid
+    square: false
+    columns: 1
+    cards: !include_dir_list /config/include/lovelace/01_kiosk/message_cards/

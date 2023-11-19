@@ -1,0 +1,11 @@
+type: grid
+title: Servers
+square: false
+columns: 2
+cards:
+  - type: tile
+    entity: sensor.meterkast_servers_stekker_power
+    name: Huidig verbruik
+  - type: tile
+    entity: sensor.maandverbruik_servers
+    name: Maandverbruik

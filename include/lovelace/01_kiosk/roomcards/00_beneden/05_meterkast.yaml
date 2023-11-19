@@ -1,0 +1,25 @@
+type: custom:stack-in-card
+cards:
+  - type: custom:mushroom-template-card
+    primary: Meterkast
+    icon: mdi:server
+    icon_color: blue
+    layout: horizontal
+    entity: sensor.p1_meter_active_power
+    secondary: >
+      {% set hum = (area_entities(area_id(entity)) | select('is_state_attr', 'device_class', 'humidity') | reject('is_hidden_entity') | map('states') | select('is_number') | map('float') | list or [0]) | average | round(0) %}
+      {% set temp = (area_entities(area_id(entity)) | select('is_state_attr', 'device_class', 'temperature') | reject('is_hidden_entity') | map('states') | select('is_number') | map('float') | list or [0]) | average | round(1) %}
+      {% set power = states('sensor.meterkast_servers_stekker_power') %}
+      {{ [ (temp ~ '°C') if temp, (power ~ ' W') if power, (hum ~ '%') if hum] | select() | join(' | ') }}
+    tap_action:
+      action: navigate
+      navigation_path: meterkast
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        entity: sensor.p1_meter_active_power
+        layout: vertical
+        icon: "{{ 'mdi:solar-power' if states(entity)|float < 0 else 'mdi:home-lightning-bolt' }}"
+        icon_color: "{{ 'green' if states(entity)|float < 0 else 'orange' }}"
+        badge_icon: "{{ 'mdi:alert' if expand(entity) | selectattr('state', 'in', ['unavailable', 'unknown']) | list | count > 0 }}"
+        badge_color: red

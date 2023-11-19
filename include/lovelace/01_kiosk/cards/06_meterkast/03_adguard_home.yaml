@@ -1,0 +1,21 @@
+type: grid
+title: Adguard Home
+square: false
+columns: 2
+cards:
+  - type: tile
+    entity: switch.adguard_home_protection
+    name: Advertenties blokkeren
+    tap_action:
+      action: toggle
+  - type: tile
+    entity: switch.adguard_home_query_log
+    name: Query logs
+    tap_action:
+      action: toggle
+  - type: tile
+    entity: sensor.adguard_home_dns_queries_blocked
+    name: Geblokkeerd (30 dagen)
+  - type: tile
+    entity: sensor.adguard_home_dns_queries_blocked_ratio
+    name: Ratio (30 dagen)

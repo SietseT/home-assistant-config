@@ -656,7 +656,7 @@
       brightness_sun_down: 255
       illuminance_level: 115
       illuminance_level_input_number: input_number.lux_garagekamer
-      no_motion_wait: 30
+      no_motion_wait: 60
 - id: '1678262903061'
   alias: 'WP test: thermostaat obv prijs'
   description: ''

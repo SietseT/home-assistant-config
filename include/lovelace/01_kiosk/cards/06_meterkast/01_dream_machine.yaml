@@ -1,0 +1,14 @@
+type: grid
+title: Dream Machine
+square: false
+columns: 2
+cards:
+  - type: tile
+    entity: sensor.dream_machine_special_edition_cpu_utilization
+    name: CPU
+  - type: tile
+    entity: sensor.dream_machine_special_edition_memory_utilization
+    name: Geheugen
+  - type: tile
+    entity: sensor.dream_machine_special_edition_cpu_temperature
+    name: Temperatuur

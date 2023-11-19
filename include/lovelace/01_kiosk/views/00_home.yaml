@@ -6,9 +6,9 @@ layout:
   grid-template-columns: 25% 25% 25% 25%
   grid-template-rows: auto
   grid-template-areas: |
-    " badges badges badges badges"
-    " header header header header"
-    " messages messages messages mgessages"
+    "badges badges badges badges"
+    "header header header header"
+    "messages messages messages messages"
     "beneden beneden eerste_verdieping eerste_verdieping"
     "buiten buiten tweede_verdieping tweede_verdieping"
   # mediaquery:
