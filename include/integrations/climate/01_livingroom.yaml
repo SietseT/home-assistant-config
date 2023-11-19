@@ -1,6 +1,6 @@
 platform: generic_thermostat
 name: Woonkamer
-heater: switch.warmtepomp
+heater: input_boolean.warmtepomp
 target_sensor: sensor.woonkamer_sensor_temperature
 unique_id: woonkamer_thermostaat_dummy
 min_temp: 15
@@ -9,7 +9,5 @@ ac_mode: false
 target_temp: 20.5
 cold_tolerance: 0.5
 hot_tolerance: 0.5
-min_cycle_duration:
-  minutes: 15
 initial_hvac_mode: "heat"
-precision: 0.1
+precision: 0.5

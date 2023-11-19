@@ -1,0 +1,25 @@
+type: grid
+title: Deurbel
+square: false
+columns: 2
+cards:
+  - type: tile
+    entity: switch.g4_doorbell_detections_person
+    name: 'Opnemen: personen'
+    tap_action:
+      action: toggle
+  - type: tile
+    entity: switch.g4_doorbell_detections_motion
+    name: 'Opnemen: beweging'
+    tap_action:
+      action: toggle
+  - type: tile
+    entity: switch.g4_doorbell_detections_vehicle
+    name: 'Opnemen: voertuigen'
+    tap_action:
+      action: toggle
+  - type: tile
+    entity: switch.g4_doorbell_detections_package
+    name: 'Opnemen: pakketjes'
+    tap_action:
+      action: toggle
