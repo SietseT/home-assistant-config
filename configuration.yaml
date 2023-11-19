@@ -7,6 +7,7 @@ http:
     - 192.168.1.112
 
 automation: !include automations.yaml
+climate: !include_dir_list /config/include/integrations/climate/
 group: !include groups.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml

@@ -4,7 +4,7 @@ square: false
 columns: 1
 cards:
   - type: custom:mushroom-climate-card
-    entity: climate.altherma
+    entity: climate.woonkamer
     name: Thermostaat
     show_temperature_control: true
     collapsible_controls: true
@@ -15,7 +15,7 @@ cards:
       action: more-info
   - graph: line
     type: sensor
-    entity: sensor.woonkamer_temperatuur
+    entity: sensor.woonkamer_sensor_temperature
     detail: 2
     hours_to_show: 24
     name: Temperatuur
