@@ -1,0 +1,55 @@
+type: vertical-stack
+cards:
+  - type: custom:mushroom-template-card
+    entity: person.femke
+    primary: "{{ state_attr(entity, 'friendly_name') }}"
+    secondary: >
+      {% if is_state('sensor.activiteit_femke', 'Onderweg') %}
+      {{ 'Onderweg: ' + states('sensor.reistijd_femke') + ' minuten ⸱ ' + state_attr('sensor.reistijd_femke', 'distance')|int|string + ' km' }}
+      {% elif is_state(entity, 'home') %}
+      Thuis
+      {% endif %}
+    icon: mdi:face-woman
+    icon_color: blue
+    badge_icon: >
+      {% if is_state('sensor.activiteit_femke', 'Onderweg') %}
+      mdi:car
+      {% elif is_state(entity, 'home') %}
+      mdi:home
+      {% endif %}
+    badge_color: >
+      {% if is_state('sensor.activiteit_femke', 'Onderweg') %}
+      blue
+      {% elif is_state(entity, 'home') %}
+      green
+      {% endif %}
+    tap_action:
+      action: more-info
+      navigation_path: person.femke
+
+  - type: custom:mushroom-template-card
+    entity: person.sietse
+    primary: "{{ state_attr(entity, 'friendly_name') }}"
+    secondary: >
+      {% if is_state('sensor.activiteit_sietse', 'Onderweg') %}
+      'Onderweg: ' + states('sensor.reistijd_sietse') + ' minuten ⸱ ' + state_attr('sensor.reistijd_sietse', 'distance')|int|string + ' km'
+      {% elif is_state(entity, 'home') %}
+      Thuis
+      {% endif %}
+    icon: mdi:face-man
+    icon_color: blue
+    badge_icon: >
+      {% if is_state('sensor.activiteit_sietse', 'Onderweg') %}
+      mdi:car
+      {% elif is_state(entity, 'home') %}
+      mdi:home
+      {% endif %}
+    badge_color: >
+      {% if is_state('sensor.activiteit_sietse', 'Onderweg') %}
+      blue
+      {% elif is_state(entity, 'home') %}
+      green
+      {% endif %}
+    tap_action:
+      action: more-info
+      navigation_path: person.sietse
