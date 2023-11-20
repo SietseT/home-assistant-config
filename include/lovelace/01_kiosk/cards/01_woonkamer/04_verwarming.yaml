@@ -15,7 +15,7 @@ cards:
       action: more-info
   - graph: line
     type: sensor
-    entity: sensor.woonkamer_sensor_temperature
+    entity: sensor.woonkamer_temperatuur
     detail: 2
     hours_to_show: 24
     name: Temperatuur

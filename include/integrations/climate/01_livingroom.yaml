@@ -1,7 +1,7 @@
 platform: generic_thermostat
 name: Woonkamer
 heater: input_boolean.warmtepomp
-target_sensor: sensor.woonkamer_sensor_temperature
+target_sensor: sensor.woonkamer_temperatuur
 unique_id: woonkamer_thermostaat_dummy
 min_temp: 15
 max_temp: 25
