@@ -1,5 +1,6 @@
 title: Hal
 path: hal
+theme: mushroom_no_borders
 subview: true
 back_path: /lovelace-kiosk/home
 icon: mdi:coat-rack

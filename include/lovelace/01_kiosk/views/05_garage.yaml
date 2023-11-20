@@ -1,5 +1,6 @@
 title: Garage
 path: garage
+theme: mushroom_no_borders
 subview: true
 back_path: /lovelace-kiosk/home
 icon: mdi:garage
