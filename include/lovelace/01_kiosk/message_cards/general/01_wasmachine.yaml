@@ -1,0 +1,18 @@
+type: conditional
+conditions:
+  - condition: state
+    entity: binary_sensor.wasmachine_status
+    state: 'on'
+card:
+  type: tile
+  entity: binary_sensor.wasmachine_status
+  vertical: true
+  name: Wasmachine draait
+  color: blue
+  state_content:
+    - state
+    - last-changed
+  tap_action:
+    action: none
+  icon_tap_action:
+    action: none
