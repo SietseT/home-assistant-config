@@ -1,35 +1,37 @@
-type: grid
-columns: 2
-square: false
+type: custom:stack-in-card
 cards:
-  - type: tile
-    entity: scene.woonkamer_ochtend
-    name: Ochtend
-    hide_state: true
-    tap_action:
-      action: toggle
-  - type: tile
-    entity: scene.woonkamer_avond
-    name: Avond
-    hide_state: true
-    tap_action:
-      action: toggle
-  - type: tile
-    entity: scene.keuken_koken
-    name: Keuken
-    hide_state: true
-    tap_action:
-      action: toggle
-  - type: tile
-    entity: light.woonkamer
-    name: Uit
-    icon: mdi:lightbulb-off
-    hide_state: true
-    tap_action:
-      action: call-service
-      service: light.turn_off
-      target:
-        area_id:
-          - woonkamer
-          - keuken
-          - tuin
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: tile
+        entity: scene.woonkamer_ochtend
+        name: Ochtend
+        hide_state: true
+        tap_action:
+          action: toggle
+      - type: tile
+        entity: scene.woonkamer_avond
+        name: Avond
+        hide_state: true
+        tap_action:
+          action: toggle
+      - type: tile
+        entity: scene.keuken_koken
+        name: Keuken
+        hide_state: true
+        tap_action:
+          action: toggle
+      - type: tile
+        entity: light.woonkamer
+        name: Uit
+        icon: mdi:lightbulb-off
+        hide_state: true
+        tap_action:
+          action: call-service
+          service: light.turn_off
+          target:
+            area_id:
+              - woonkamer
+              - keuken
+              - tuin
