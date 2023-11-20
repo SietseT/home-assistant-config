@@ -5,7 +5,7 @@ cards:
     primary: "{{ state_attr(entity, 'friendly_name') }}"
     secondary: >
       {% if is_state('sensor.activiteit_femke', 'Onderweg') %}
-      {{ 'Onderweg: ' + states('sensor.reistijd_femke') + ' minuten ⸱ ' + state_attr('sensor.reistijd_femke', 'distance')|int|string + ' km' }}
+      {{ states('sensor.reistijd_femke') + ' minuten ⸱ ' + state_attr('sensor.reistijd_femke', 'distance')|int|string + ' km' }}
       {% elif is_state(entity, 'home') %}
       Thuis
       {% endif %}
@@ -32,7 +32,7 @@ cards:
     primary: "{{ state_attr(entity, 'friendly_name') }}"
     secondary: >
       {% if is_state('sensor.activiteit_sietse', 'Onderweg') %}
-      'Onderweg: ' + states('sensor.reistijd_sietse') + ' minuten ⸱ ' + state_attr('sensor.reistijd_sietse', 'distance')|int|string + ' km'
+      {{ states('sensor.reistijd_sietse') + ' minuten ⸱ ' + state_attr('sensor.reistijd_sietse', 'distance')|int|string + ' km' }}
       {% elif is_state(entity, 'home') %}
       Thuis
       {% endif %}
