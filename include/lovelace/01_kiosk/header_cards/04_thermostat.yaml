@@ -1,0 +1,15 @@
+type: grid
+columns: 1
+square: false
+cards:
+  - type: tile
+    entity: climate.woonkamer
+    vertical: false
+    name: Thermostaat
+    show_entity_picture: false
+    hide_state: false
+    state_content:
+      - current_temperature
+      - last-changed
+    features:
+      - type: target-temperature
