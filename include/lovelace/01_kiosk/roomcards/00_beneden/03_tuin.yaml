@@ -24,6 +24,13 @@ cards:
         badge_icon: "{{ 'mdi:alert' if expand(entity) | selectattr('state', 'in', ['unavailable', 'unknown']) | list | count > 0 }}"
         badge_color: red
       - type: custom:mushroom-template-card
+        entity: cover.zonwering
+        layout: vertical
+        icon: "{{ 'mdi:window-shutter-open' if not is_state(entity, ['unavailable', 'unknown', 'closed']) else 'mdi:window-shutter' }}"
+        icon_color: "{{ 'yellow' if not states(entity) in ['unavailable', 'unknown', 'open'] }}"
+        badge_icon: "{{ 'mdi:alert' if is_state(entity, ['unavailable', 'unknown']) }}"
+        badge_color: red
+      - type: custom:mushroom-template-card
         entity: binary_sensor.tuin_bewegingssensor_occupancy
         layout: vertical
         icon: "{{ 'mdi:motion-sensor' if is_state(entity, 'on') else 'mdi:motion-sensor-off' }}"
