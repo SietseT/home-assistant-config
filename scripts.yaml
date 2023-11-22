@@ -39,3 +39,36 @@ ios_notify_test:
       url: /map
       map_show_user_location: false
       camera_camera_entity: camera.buienradar
+kiosk_popup_view:
+  alias: 'Kiosk: popup view'
+  sequence:
+  - variables:
+      home_url: http://192.168.1.111:8123/lovelace-kiosk/home
+      popup_url: http://192.168.1.111:8123/lovelace-kiosk/popup
+  - service: fully_kiosk.load_url
+    data:
+      url: '{{ popup_url }}'
+    target:
+      device_id: 3983aa94f4ff52592601308c3aff05f0
+  - service: button.press
+    data: {}
+    target:
+      entity_id: button.galaxy_tab_a8_bring_to_foreground
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - if:
+    - condition: template
+      value_template: '{{ states(''sensor.galaxy_tab_a8_current_page'') != home_url
+        }}'
+      alias: home_url is not current page
+    then:
+    - service: fully_kiosk.load_url
+      data:
+        url: '{{ home_url }}'
+      target:
+        device_id: 3983aa94f4ff52592601308c3aff05f0
+  mode: restart
+  icon: mdi:tablet

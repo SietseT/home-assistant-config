@@ -8,8 +8,8 @@ layout:
   grid-template-rows: auto
   grid-template-areas: |
     "badges badges badges badges"
-    "header header header header"
     "messages messages messages messages"
+    "header header header header"
     "beneden beneden eerste_verdieping eerste_verdieping"
     "buiten buiten tweede_verdieping tweede_verdieping"
   mediaquery:

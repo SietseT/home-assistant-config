@@ -388,6 +388,8 @@
     to: 'on'
   condition: []
   action:
+  - service: script.kiosk_popup_view
+    data: {}
   - service: camera.snapshot
     data:
       filename: /media/local/g4_doorbell_snapshot.jpg

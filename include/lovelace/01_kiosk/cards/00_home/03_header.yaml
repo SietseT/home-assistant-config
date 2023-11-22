@@ -1,6 +1,11 @@
-type: grid
-columns: 4
-square: false
+type: vertical-stack
 view_layout:
   grid-area: header
-cards: !include_dir_list /config/include/lovelace/01_kiosk/header_cards/
+cards:
+  - type: custom:mushroom-title-card
+  - type: grid
+    columns: 4
+    square: false
+    view_layout:
+      grid-area: header
+    cards: !include_dir_list /config/include/lovelace/01_kiosk/header_cards/
