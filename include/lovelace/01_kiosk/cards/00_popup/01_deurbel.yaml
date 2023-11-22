@@ -2,7 +2,7 @@ type: conditional
 conditions:
   - condition: state
     entity: binary_sensor.g4_doorbell_doorbell
-    state: 'off'
+    state: 'on'
 card:
   type: picture-entity
   entity: camera.g4_doorbell

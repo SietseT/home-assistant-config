@@ -388,13 +388,16 @@
     to: 'on'
   condition: []
   action:
-  - service: script.kiosk_popup_view
-    data: {}
-  - service: camera.snapshot
-    data:
-      filename: /media/local/g4_doorbell_snapshot.jpg
-    target:
-      entity_id: camera.g4_doorbell
+  - parallel:
+    - service: camera.snapshot
+      data:
+        filename: /media/local/g4_doorbell_snapshot.jpg
+      target:
+        entity_id: camera.g4_doorbell
+    - service: script.turn_on
+      data: {}
+      target:
+        entity_id: script.kiosk_popup_view
   - service: notify.all_ios_devices
     data:
       title: "\U0001F514 TRIINNGGG \U0001F514"
