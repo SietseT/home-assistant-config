@@ -1,7 +1,7 @@
 icon: mdi:home
 title: Popup
 type: panel
-#subview: true
+subview: true
 path: popup
 theme: mushroom_no_borders
 cards: 
