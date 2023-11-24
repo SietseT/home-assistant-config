@@ -1279,3 +1279,23 @@
 
       '
 - *id001
+- id: 83b1b77c-bda8-4fd3-abef-f37650e2524b
+  alias: 00 - Select theme based on sun
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  - platform: event
+    event_type: automation_reloaded
+  - platform: state
+    entity_id: sun.sun
+    to:
+    - above_horizon
+    - below_horizon
+  action:
+  - service: frontend.set_theme
+    data:
+      name: mushroom_no_borders
+      mode: '{{ ''light'' if is_state(''sun.sun'', ''above_horizon'') else ''dark''
+        }}'
+  initial_state: 'on'

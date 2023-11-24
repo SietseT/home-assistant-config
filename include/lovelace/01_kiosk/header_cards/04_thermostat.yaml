@@ -3,7 +3,7 @@ columns: 1
 square: false
 cards:
   - type: tile
-    entity: climate.woonkamer
+    entity: climate.altherma
     vertical: false
     name: Thermostaat
     show_entity_picture: false
