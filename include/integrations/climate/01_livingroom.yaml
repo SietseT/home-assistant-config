@@ -1,0 +1,13 @@
+platform: generic_thermostat
+name: Woonkamer
+heater: input_boolean.warmtepomp
+target_sensor: sensor.woonkamer_temperatuur
+unique_id: woonkamer_thermostaat_dummy
+min_temp: 15
+max_temp: 25
+ac_mode: false
+target_temp: 20.5
+cold_tolerance: 0.5
+hot_tolerance: 0.5
+initial_hvac_mode: "heat"
+precision: 0.1
