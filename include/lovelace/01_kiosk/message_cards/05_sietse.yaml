@@ -2,7 +2,7 @@ type: conditional
 conditions:
   - condition: state
     entity: sensor.activiteit_sietse
-    state_not: 'Onderweg'
+    state: 'Onderweg'
 card:
   type: map
   entities:
