@@ -1,9 +1,0 @@
-type: grid
-title: Zonwering
-square: false
-columns: 1
-cards:
-  - type: tile
-    entity: cover.zonwering
-    features:
-      - type: cover-open-close

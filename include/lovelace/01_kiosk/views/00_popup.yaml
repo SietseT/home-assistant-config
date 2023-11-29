@@ -6,4 +6,4 @@ path: popup
 theme: mushroom_no_borders
 cards: 
   - type: horizontal-stack
-    cards: !include_dir_list /config/include/lovelace/01_kiosk/cards/00_popup/
+    cards: !include_dir_list /config/include/lovelace/01_kiosk/view_cards/00_popup/

@@ -1,0 +1,31 @@
+type: custom:stack-in-card
+view_layout:
+  grid-column: 'span 2'
+cards:
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: custom:mushroom-template-card
+        entity: sensor.electricity_price_thuis
+        primary: Prijs
+        secondary: "€ {{ states(entity)|float|round(2)|string|replace('.', ',') }}"
+        icon: mdi:flash
+        icon_color: blue
+      - type: custom:mushroom-template-card
+        entity: sensor.electricity_price_thuis
+        primary: Gemiddeld
+        secondary: "€ {{ state_attr(entity, 'avg_price')|float|round(2)|string|replace('.', ',') }}"
+      - type: custom:mushroom-template-card
+        entity: sensor.electricity_price_thuis
+        icon: mdi:currency-eur
+        icon_color: yellow
+        primary: Goedkoop
+        secondary: >
+          {%- set sensor = 'sensor.nordpool_kwh_nl_eur_3_09_0' -%}
+          {% from "cheapest_energy_hours.jinja" import cheapest_energy_hours %}
+          {{ as_timestamp(cheapest_energy_hours(sensor=sensor, look_ahead=true)) | timestamp_custom('%H:%M') }} uur
+      - type: custom:mushroom-template-card
+        entity: sensor.monthly_cost_thuis
+        primary: Maandkosten
+        secondary: "€ {{ states(entity)|float|round(2)|string|replace('.', ',') }}"

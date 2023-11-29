@@ -1,0 +1,25 @@
+type: conditional
+view_layout:
+  grid-column: 'span 2'
+conditions:
+  - condition: state
+    entity: sensor.activiteit_femke
+    state: 'Onderweg'
+card:
+  type: map
+  entities:
+    - entity: person.femke
+  dark_mode: false
+  hours_to_show: 1
+  default_zoom: 11
+  card_mod:
+    style:
+      ha-map$: |
+        .leaflet-control-attribution {
+          display:none !important;
+        }
+        .leaflet-control-zoom {
+          display:none !important;
+        }
+      ha-icon-button$: |
+        mwc-icon-button{display:none !important}
