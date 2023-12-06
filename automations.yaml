@@ -1208,3 +1208,47 @@
       mode: '{{ ''light'' if is_state(''sun.sun'', ''above_horizon'') else ''dark''
         }}'
   initial_state: 'on'
+- id: '1701887563351'
+  alias: 'Mercedes: laag brandstofniveau'
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ states(''sensor.k_723_nn_range_liquid'')|float < minimum_value
+      }}'
+  condition: []
+  action:
+  - service: notify.all_ios_devices
+    data:
+      title: Mercedes-Benz
+      message: '⛽ Tijd om te tanken! Huidig bereik is: {{ states(''sensor.k_723_nn_range_liquid'')
+        }} km.'
+      data:
+        url: /lovelace-huis/auto
+  mode: single
+  variables:
+    minimum_range: 120
+- id: '1701888381951'
+  alias: 'Mercedes: auto niet op slot'
+  description: Als auto 5 minuten uit staat, maar niet op slot is.
+  trigger:
+  - platform: template
+    value_template: '{%- set lock = states(''lock.k_723_nn_lock'') %}
+
+      {%- set ignition_state = states(''sensor.k_723_nn_ignition_state'') %}
+
+      {{ lock == ''unlocked'' and ignition_state == ''0'' }}'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.all_ios_devices
+    data:
+      title: Mercedes-Benz
+      message: "\U0001F513 De auto is niet op slot!"
+      data:
+        url: /lovelace-huis/auto
+  mode: single
+  variables:
+    minimum_range: 120
