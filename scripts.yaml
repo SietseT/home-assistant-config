@@ -72,3 +72,14 @@ kiosk_popup_view:
         device_id: 3983aa94f4ff52592601308c3aff05f0
   mode: restart
   icon: mdi:tablet
+deurbel_sonos:
+  alias: 'Deurbel: sonos (TTS)'
+  use_blueprint:
+    path: Talvish/sonos_say.yaml
+    input:
+      tts_language: nl
+  icon: mdi:doorbell
+sonos_dingdong:
+  alias: 'Sonos: dingdong'
+  sequence: []
+  mode: single

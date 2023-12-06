@@ -16,14 +16,6 @@ sensor: !include sensors.yaml
 template: !include template_sensors.yaml
 
 camera:
-  - platform: xiaomi_cloud_map_extractor
-    host: !secret xiaomi_vacuum_host
-    token: !secret xiaomi_vacuum_token
-    username: !secret xiaomi_cloud_username
-    password: !secret xiaomi_cloud_password
-    draw: ['all']
-    attributes:
-      - calibration_points
   - platform: local_file
     name: Doorbell snapshot
     file_path: /media/local/g4_doorbell_snapshot.jpg
