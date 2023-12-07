@@ -389,11 +389,6 @@
   condition: []
   action:
   - parallel:
-    - service: camera.snapshot
-      data:
-        filename: /media/local/g4_doorbell_snapshot.jpg
-      target:
-        entity_id: camera.g4_doorbell
     - service: script.turn_on
       data: {}
       target:
@@ -405,6 +400,20 @@
       target:
         entity_id:
         - media_player.galaxy_tab_a8
+    - if:
+      - condition: template
+        value_template: '{{ true }}'
+      then:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: camera.snapshot
+        data:
+          filename: /media/local/g4_doorbell_snapshot.jpg
+        target:
+          entity_id: camera.g4_doorbell
   - service: notify.all_ios_devices
     data:
       title: "\U0001F514 TRIINNGGG \U0001F514"
@@ -412,13 +421,6 @@
       data:
         entity_id: camera.doorbell_snapshot
         url: /lovelace-kiosk/popup
-        actions:
-        - action: DOORBELL_NOT_HOME
-          title: Niet thuis
-        - action: DOORBELL_LEAVE_PACKAGE
-          title: Pakket achterlaten
-        - action: DOORBELL_OMW
-          title: Kom eraan
   mode: single
 - id: '1671961809570'
   alias: Wasmachine

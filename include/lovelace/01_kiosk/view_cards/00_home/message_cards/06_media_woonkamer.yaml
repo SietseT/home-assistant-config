@@ -1,0 +1,18 @@
+type: conditional
+view_layout:
+  grid-column: 'span 8'
+conditions:
+  - condition: state
+    entity: media_player.woonkamer
+    state: 'playing'
+card:
+  type: custom:mini-media-player
+  entity: media_player.woonkamer
+  name: Sonos
+  icon: mdi:speaker-wireless
+  artwork: material
+  info: scroll
+  sound_mode: full
+  hide:
+    source: true
+    power: true
