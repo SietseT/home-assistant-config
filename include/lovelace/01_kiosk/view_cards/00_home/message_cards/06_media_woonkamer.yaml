@@ -3,8 +3,8 @@ view_layout:
   grid-column: 'span 8'
 conditions:
   - condition: state
-    entity: media_player.woonkamer
-    state: 'playing'
+    entity: binary_sensor.streamt_muziek_naar_sonos_woonkamer
+    state: 'on'
 card:
   type: custom:mini-media-player
   entity: media_player.woonkamer
@@ -16,3 +16,4 @@ card:
   hide:
     source: true
     power: true
+    progress: false

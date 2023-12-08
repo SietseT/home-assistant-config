@@ -47,3 +47,23 @@ cards:
         entity: sensor.roborock_s7_maxv_last_clean_end
         name: Laatste schoonmaak
         layout: vertical
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: vacuum.roborock_s7_maxv
+        state: cleaning
+    card:
+      type: picture
+      image_entity: image.roborock_s7_maxv_beneden
+      tap_action:
+        action: more-info
+      card_mod:
+        style: |
+          ha-card {
+            height: 300px!important;
+          }
+          img {
+            width: 100%; /* or any custom size */
+            height: 100%; 
+            object-fit: cover;
+          }
