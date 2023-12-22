@@ -180,7 +180,6 @@
   - name : "Low noise control"
     unique_id: warmtepomp_low_noise_control
     state: "{{ state_attr('sensor.althermasensors', 'Low noise control') }}"
-    state_class: measurement
   - name : "Suction pipe temperature"
     unique_id: warmtepomp_suction_pipe_temperature
     state: "{{ state_attr('sensor.althermasensors', 'Suction pipe temp.') }}"
@@ -198,15 +197,12 @@
   - name : "STD Compressor 1"
     unique_id: warmtepomp_std_compressor_1
     state: "{{ state_attr('sensor.althermasensors', 'STD Compressor 1') }}"
-    state_class: measurement 
   - name : "Freeze protection"
     unique_id: warmtepomp_freeze_protection
     state: "{{ state_attr('sensor.althermasensors', 'Freeze Protection') }}"
-    state_class: measurement 
   - name : "Silent mode"
     unique_id: warmtepomp_silent_mode
     state: "{{ state_attr('sensor.althermasensors', 'Silent Mode') }}"
-    state_class: measurement 
 
   - name: "ESPAltherma last update"
     unique_id: warmtepomp_espaltherma_last_update

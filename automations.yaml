@@ -127,23 +127,6 @@
     target:
       entity_id: select.g4_doorbell_doorbell_text
   mode: single
-- id: '1669762776206'
-  alias: 'Slaapkamer: verwarmen avond'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.iemand_slaapt
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: climate.set_temperature
-    data:
-      temperature: 19
-    target:
-      entity_id: climate.slaapkamer_thermostat
-  mode: single
 - id: '1669923852642'
   alias: 'Badkamer: lampen'
   description: ''
@@ -305,23 +288,6 @@
     target:
       entity_id: all
   mode: single
-- id: '1671053954323'
-  alias: 'Slaapkamer: verwarming uit'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.iemand_slaapt
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: climate.set_temperature
-    data:
-      temperature: 12
-    target:
-      device_id: 274685efa30c5190b9946adfdca7d235
-  mode: single
 - id: '1671090641380'
   alias: Iemand wakker
   description: ''
@@ -370,12 +336,6 @@
     target:
       entity_id: scene.woonkamer_avond
     metadata: {}
-  - service: automation.trigger
-    data:
-      skip_condition: true
-    target:
-      entity_id: automation.avondscene_uit_als_het_licht_is
-    enabled: false
   mode: single
 - id: '1671461388682'
   alias: Deurbel
@@ -969,32 +929,6 @@
           entity_id: light.badkamer
         data: {}
   mode: single
-- id: '1694595241225'
-  alias: 'Avondscène: uit als het licht is'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.is_donker
-    to: 'off'
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-  condition: []
-  action:
-  - wait_for_trigger:
-    - platform: state
-      entity_id:
-      - binary_sensor.is_donker
-      to: 'off'
-    alias: Wacht tot het niet meer donker is
-    enabled: false
-  - service: scene.turn_on
-    target:
-      entity_id: scene.woonkamer_avond_uit
-    metadata: {}
-  mode: single
 - id: '1695126535181'
   alias: 'Woonkamer: knoppen'
   description: ''
@@ -1120,32 +1054,7 @@
     target:
       entity_id: vacuum.roborock_s7_maxv
   mode: single
-- id: '1699825400973'
-  alias: 'Warmtepomp: uit als iemand slaapt'
-  description: Voor tijdens verbouwing
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.iemand_slaapt
-  condition: []
-  action:
-  - if:
-    - condition: state
-      entity_id: binary_sensor.iemand_slaapt
-      state: 'on'
-    then:
-    - service: climate.turn_off
-      data: {}
-      target:
-        entity_id: climate.altherma
-    else:
-    - service: climate.turn_on
-      data: {}
-      target:
-        entity_id: climate.altherma
-  mode: single
-- &id001
-  id: 690cc2c9-f014-4b38-90e8-51217659d49e
+- id: 690cc2c9-f014-4b38-90e8-51217659d49e
   alias: Afvalwijzer
   trigger:
   - platform: time
@@ -1189,7 +1098,6 @@
       | list | selectattr(''0'', ''in'', trash) | map(attribute=''1'') | list }}
 
       '
-- *id001
 - id: 83b1b77c-bda8-4fd3-abef-f37650e2524b
   alias: 00 - Select theme based on sun
   description: ''
@@ -1215,7 +1123,7 @@
   description: ''
   trigger:
   - platform: template
-    value_template: '{{ states(''sensor.k_723_nn_range_liquid'')|float < minimum_value
+    value_template: '{{ states(''sensor.k_723_nn_range_liquid'')|float < minimum_range
       }}'
   condition: []
   action:
@@ -1254,3 +1162,279 @@
   mode: single
   variables:
     minimum_range: 120
+- id: '1702478063586'
+  alias: 'Tuin: lampen aan'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
+  - platform: numeric_state
+    entity_id:
+    - sensor.tuin_bewegingssensor_illuminance_lux
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 200
+  condition:
+  - condition: state
+    entity_id: light.tuin
+    state: 'off'
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.tuin
+    data: {}
+  mode: single
+- id: '1702644282263'
+  alias: 'Eerste verdieping: verwarmen aan'
+  description: Zet input_boolean aan
+  trigger:
+  - platform: template
+    value_template: '{%- set temperature = states(''sensor.eerste_verdieping_sensor_temperature'')|float
+      %}
+
+      {%- set target_value = states(''input_number.thermostaat_eerste_verdieping'')|float
+      %}
+
+      {{ temperature <= (target_value - 0.5) }}'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    id: below
+  - platform: template
+    value_template: '{%- set temperature = states(''sensor.eerste_verdieping_sensor_temperature'')|float
+      %}
+
+      {%- set target_value = states(''input_number.thermostaat_eerste_verdieping'')|float
+      %}
+
+      {{ temperature >= (target_value + 0.5) }}'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    id: above
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - below
+    then:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.verwarmen_eerste_verdieping
+      data: {}
+    else:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.verwarmen_eerste_verdieping
+      data: {}
+  mode: single
+- id: '1702644465125'
+  alias: 'Eerste verdieping: verdeler aan/uit'
+  description: Verdeler aan/uitzetten op basis van input_boolean
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.verwarmen_eerste_verdieping
+    to:
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: input_boolean.verwarmen_eerste_verdieping
+      state: 'on'
+    then:
+    - service: climate.turn_on
+      target:
+        entity_id:
+        - climate.thermostaat_verdeler_eerste_verdieping
+        device_id: []
+        area_id: []
+      data: {}
+    else:
+    - service: climate.turn_off
+      target:
+        entity_id: climate.thermostaat_verdeler_eerste_verdieping
+      data: {}
+    alias: 'Als aan: verdeler aanzetten. Anders uitzetten.'
+  mode: single
+- id: '1702645274479'
+  alias: 'Warmtepomp: aan/uit '
+  description: Aan/uit op basis van vraag beneden of eerste verdieping
+  trigger:
+  - platform: template
+    value_template: '{% if states(''input_boolean.verwarmen_beneden'') == ''on'' %}
+
+      true
+
+      {% elif states(''input_boolean.verwarmen_eerste_verdieping'') == ''on'' %}
+
+      true
+
+      {% else %}
+
+      false
+
+      {% endif %}'
+    id: 'on'
+  - platform: template
+    value_template: '{% if states(''input_boolean.verwarmen_beneden'') == ''off''
+      and states(''input_boolean.verwarmen_eerste_verdieping'') == ''off'' %}
+
+      true
+
+      {% else %}
+
+      false
+
+      {% endif %}'
+    id: 'off'
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - 'on'
+    then:
+    - service: climate.turn_on
+      target:
+        entity_id: climate.altherma
+      data: {}
+    else:
+    - service: climate.turn_off
+      target:
+        entity_id: climate.altherma
+      data: {}
+  mode: single
+- id: '1702645335142'
+  alias: 'Beneden: verdeler aan/uit'
+  description: Verdeler aan/uitzetten op basis van input_boolean
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.verwarmen_beneden
+    to:
+  condition: []
+  action:
+  - alias: 'Als aan: verdeler aanzetten. Anders uitzetten.'
+    if:
+    - condition: state
+      entity_id: input_boolean.verwarmen_beneden
+      state: 'on'
+    then:
+    - service: climate.turn_on
+      target:
+        device_id: []
+        area_id: []
+        entity_id:
+        - climate.thermostaat_verdeler_beneden_1
+        - climate.thermostaat_verdeler_beneden_2
+        - climate.thermostaat_verdeler_beneden_3
+        - climate.thermostaat_verdeler_beneden_4
+      data: {}
+    else:
+    - service: climate.turn_off
+      data: {}
+      target:
+        entity_id:
+        - climate.thermostaat_verdeler_beneden_1
+        - climate.thermostaat_verdeler_beneden_2
+        - climate.thermostaat_verdeler_beneden_3
+        - climate.thermostaat_verdeler_beneden_4
+  mode: single
+- id: '1702645392022'
+  alias: 'Beneden: verwarmen aan/uit'
+  description: Zet input_boolean aan
+  trigger:
+  - platform: template
+    value_template: '{%- set temperature = states(''sensor.woonkamer_temperatuur'')|float
+      %}
+
+      {%- set target_value = states(''input_number.thermostaat_beneden'')|float %}
+
+      {{ temperature <= (target_value - 0.5) }}'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    id: below
+  - platform: template
+    value_template: '{%- set temperature = states(''sensor.woonkamer_temperatuur'')|float
+      %}
+
+      {%- set target_value = states(''input_number.thermostaat_beneden'')|float %}
+
+      {{ temperature >= (target_value + 0.5) }}'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    id: above
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - below
+    then:
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.verwarmen_beneden
+    else:
+    - service: input_boolean.turn_off
+      target:
+        entity_id:
+        - input_boolean.verwarmen_beneden
+      data: {}
+  mode: single
+- id: '1703230790118'
+  alias: Afvalwijzer
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+    variables:
+      when_en: today
+      when_nl: Vandaag
+  - platform: time
+    at: '18:00:00'
+    variables:
+      when_en: tomorrow
+      when_nl: Morgen
+  condition:
+  - alias: Notification needed?
+    condition: template
+    value_template: '{{ states(sensor) != ''Geen'' }}'
+  action:
+  - alias: Notification phones
+    service: notify.all_ios_devices
+    data:
+      title: "{%- if when_en == 'tomorrow' %}\n  Morgen wordt afval opgehaald\n{%-
+        else %}\n  Vandaag wordt afval opgehaald!\n{%- endif %}\n"
+      message: "{%- if trash_pickup | length > 1 %}\n  {{ trash_pickup[:-1] | join(',
+        ') | capitalize }} en {{ trash_pickup[-1] }} moeten naar buiten.\n{%- else
+        %}\n  {{ trash_pickup[0] | capitalize }} moet naar buiten.\n{%- endif %}\n"
+      data:
+        channel: Trash
+        ttl: 0
+        priority: high
+        notification_icon: mdi:trash-can-outline
+  mode: single
+  max_exceeded: silent
+  variables:
+    sensor: sensor.afvalwijzer_{{ when_en }}
+    trash_descr:
+      gft: de GFT-bak
+      restafval: het restafval
+      papier: de papierbak
+      pmd: het plastic
+    trash_pickup: '{%- set trash = states(sensor).split('', '') %} {{ trash_descr.items()
+      | list | selectattr(''0'', ''in'', trash) | map(attribute=''1'') | list }}
+
+      '

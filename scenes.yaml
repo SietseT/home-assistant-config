@@ -86,44 +86,6 @@
       friendly_name: Keuken kookeiland ledstrip
       supported_features: 0
       state: 'on'
-    light.tuin:
-      min_color_temp_kelvin: 2202
-      max_color_temp_kelvin: 4000
-      min_mireds: 250
-      max_mireds: 454
-      effect_list:
-      - blink
-      - breathe
-      - channel_change
-      - finish_effect
-      - okay
-      - stop_effect
-      supported_color_modes:
-      - color_temp
-      - onoff
-      - xy
-      color_mode: xy
-      brightness: 167
-      color_temp_kelvin:
-      color_temp:
-      hs_color:
-      - 91.902
-      - 80.392
-      rgb_color:
-      - 146
-      - 255
-      - 50
-      xy_color:
-      - 0.290667
-      - 0.624
-      effect:
-      entity_id:
-      - light.tuin_wand_huis
-      - light.tuin_verlichting
-      icon: mdi:lightbulb-group
-      friendly_name: Tuin
-      supported_features: 44
-      state: 'on'
     light.woonkamer_eettafel:
       supported_color_modes:
       - brightness
@@ -157,8 +119,6 @@
       entity_only: true
     light.keuken_kookeiland_ledstrip:
       entity_only: true
-    light.tuin:
-      entity_only: true
     light.woonkamer_eettafel:
       entity_only: true
     switch.kerstboom_stekker:
@@ -169,8 +129,8 @@
     light.woonkamer_eettafel:
       supported_color_modes:
       - brightness
-      color_mode:
-      brightness:
+      color_mode: brightness
+      brightness: 128
       entity_id:
       - light.xxl_liva_zwart_ombre_2
       - light.xxl_liva_zwart_ombre_4
@@ -180,7 +140,7 @@
       icon: mdi:lightbulb-group
       friendly_name: Woonkamer eettafel
       supported_features: 0
-      state: 'off'
+      state: 'on'
     light.keuken_aap:
       supported_color_modes:
       - onoff
@@ -200,12 +160,12 @@
       - stop_hue_effect
       supported_color_modes:
       - brightness
-      color_mode:
-      brightness:
+      color_mode: brightness
+      brightness: 197
       effect:
       friendly_name: Woonkamer voetlamp
       supported_features: 44
-      state: 'off'
+      state: 'on'
     light.aanrecht:
       effect_list:
       - blink
@@ -222,7 +182,6 @@
       brightness: 166
       effect:
       entity_id:
-      - light.dresden_elektronik_conbee_ii_keuken_aanrecht_zha_group_0x0004
       - light.keuken_1
       - light.keuken_2
       - light.keuken_3
