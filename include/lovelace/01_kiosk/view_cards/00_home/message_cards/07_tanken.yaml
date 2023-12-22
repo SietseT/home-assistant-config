@@ -1,0 +1,18 @@
+type: conditional
+view_layout:
+  grid-column: 'span 1'
+conditions:
+  - condition: state
+    entity: binary_sensor.mercedes_laag_brandstofniveau
+    state: 'on'
+card:
+  type: tile
+  entity: sensor.k_723_nn_range_liquid
+  vertical: true
+  show_entity_picture: false
+  color: red
+  hide_state: false
+  name: 'Auto Sietse'
+  state_content:
+    - state
+    - last-changed

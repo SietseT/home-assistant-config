@@ -1122,9 +1122,11 @@
   alias: 'Mercedes: laag brandstofniveau'
   description: ''
   trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.k_723_nn_range_liquid'')|float < minimum_range
-      }}'
+  - platform: state
+    entity_id:
+    - binary_sensor.mercedes_laag_brandstofniveau
+    to: 'on'
+    from: 'off'
   condition: []
   action:
   - service: notify.all_ios_devices
@@ -1135,8 +1137,6 @@
       data:
         url: /lovelace-huis/auto
   mode: single
-  variables:
-    minimum_range: 120
 - id: '1701888381951'
   alias: 'Mercedes: auto niet op slot'
   description: Als auto 5 minuten uit staat, maar niet op slot is.
