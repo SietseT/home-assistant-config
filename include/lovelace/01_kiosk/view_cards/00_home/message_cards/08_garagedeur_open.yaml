@@ -1,0 +1,20 @@
+type: conditional
+view_layout:
+  grid-column: 'span 1'
+conditions:
+  - condition: state
+    entity: cover.garagedeur
+    state: 'open'
+card:
+  type: tile
+  entity: cover.garagedeur
+  vertical: true
+  show_entity_picture: false
+  color: red
+  hide_state: false
+  name: Garagedeur
+  state_content: state
+  tap_action:
+    action: more-info
+  icon_tap_action:
+    action: none
