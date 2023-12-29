@@ -17,8 +17,8 @@ cards:
     collapsible_controls: true
     fill_container: true
   - type: custom:mushroom-light-card
-    entity: light.woonkamer_voetlamp
-    name: Voetlamp
+    entity: light.woonkamer_hoeklamp
+    name: Hoeklamp
     show_brightness_control: true
     collapsible_controls: true
     fill_container: true
