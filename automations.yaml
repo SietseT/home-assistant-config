@@ -360,6 +360,7 @@
       target:
         entity_id:
         - media_player.galaxy_tab_a8
+        - media_player.unnamed_room
     - if:
       - condition: template
         value_template: '{{ true }}'
@@ -374,6 +375,10 @@
           filename: /media/local/g4_doorbell_snapshot.jpg
         target:
           entity_id: camera.g4_doorbell
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.awtrix_deurbel_notificatie
+      data: {}
   - service: notify.all_ios_devices
     data:
       title: "\U0001F514 TRIINNGGG \U0001F514"
@@ -819,7 +824,7 @@
       state: 'off'
     - condition: numeric_state
       entity_id: sensor.kantoor_bewegingssensor_illuminance_lux
-      below: 20
+      below: input_number.lux_kantoor
       enabled: true
   action:
   - if:
@@ -854,12 +859,12 @@
           minutes: 3
           seconds: 0
       continue_on_timeout: false
-    enabled: false
+    enabled: true
   - service: light.turn_off
     data: {}
     target:
       entity_id: light.kantoor_plafondlamp
-    enabled: false
+    enabled: true
   mode: restart
 - id: '1694012513215'
   alias: 'Werkkamer: lamp uit (lux)'
@@ -1393,48 +1398,187 @@
         - input_boolean.verwarmen_beneden
       data: {}
   mode: single
-- id: '1703230790118'
-  alias: Afvalwijzer
+- id: '1703234577782'
+  alias: 'Roborock: schoonmaakteller'
+  description: Zet teller +1 als Roborock klaar is met schoonmaken
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.roborock_s7_maxv
+    from: returning
+    to: docked
+  condition: []
+  action:
+  - service: counter.increment
+    target:
+      entity_id: counter.roborock_schoonmaakbeurten
+    data: {}
+  mode: single
+- id: '1703234942665'
+  alias: 'Roborock: notificatie vol'
   description: ''
   trigger:
-  - platform: time
-    at: 07:00:00
-    variables:
-      when_en: today
-      when_nl: Vandaag
-  - platform: time
-    at: '18:00:00'
-    variables:
-      when_en: tomorrow
-      when_nl: Morgen
-  condition:
-  - alias: Notification needed?
-    condition: template
-    value_template: '{{ states(sensor) != ''Geen'' }}'
+  - platform: state
+    entity_id:
+    - binary_sensor.roborock_opvangbak_vol
+    from: 'off'
+    to: 'on'
+  condition: []
   action:
-  - alias: Notification phones
-    service: notify.all_ios_devices
+  - service: notify.all_ios_devices
     data:
-      title: "{%- if when_en == 'tomorrow' %}\n  Morgen wordt afval opgehaald\n{%-
-        else %}\n  Vandaag wordt afval opgehaald!\n{%- endif %}\n"
-      message: "{%- if trash_pickup | length > 1 %}\n  {{ trash_pickup[:-1] | join(',
-        ') | capitalize }} en {{ trash_pickup[-1] }} moeten naar buiten.\n{%- else
-        %}\n  {{ trash_pickup[0] | capitalize }} moet naar buiten.\n{%- endif %}\n"
-      data:
-        channel: Trash
-        ttl: 0
-        priority: high
-        notification_icon: mdi:trash-can-outline
+      message: "\U0001F9F9 Het is tijd om de Roborock te legen!"
   mode: single
-  max_exceeded: silent
-  variables:
-    sensor: sensor.afvalwijzer_{{ when_en }}
-    trash_descr:
-      gft: de GFT-bak
-      restafval: het restafval
-      papier: de papierbak
-      pmd: het plastic
-    trash_pickup: '{%- set trash = states(sensor).split('', '') %} {{ trash_descr.items()
-      | list | selectattr(''0'', ''in'', trash) | map(attribute=''1'') | list }}
-
-      '
+- id: '1703752643606'
+  alias: 'Awtrix: deurbell'
+  description: ''
+  use_blueprint:
+    path: smarthomejunkie/awtrix_create_notification.yaml
+    input:
+      awtrix_displays:
+      - 1bb1ba599b35381afa1649231e88e726
+      toggle_helper: input_boolean.awtrix_deurbel_notificatie
+      notification_text: De bel!
+      my_icon: '56373'
+      push_icon: '0'
+      play_alert_tone: true
+      hold_notification: false
+      duration: '15'
+      effect: ''
+- id: '1703756491914'
+  alias: 'Awtrix: binnentemperatuur'
+  description: ''
+  use_blueprint:
+    path: smarthomejunkie/awtrix_create_sensor_app.yaml
+    input:
+      awtrix_displays:
+      - 1bb1ba599b35381afa1649231e88e726
+      toggle_helper: input_boolean.awtrix_temperatuur_binnen
+      my_sensor: sensor.eerste_verdieping_sensor_temperature
+      my_icon: '1430'
+      push_icon: '0'
+- id: '1703756746548'
+  alias: 'Awtrix: weer'
+  description: ''
+  use_blueprint:
+    path: smarthomejunkie/awtrix_weather_app.yaml
+    input:
+      awtrix_displays:
+      - 1bb1ba599b35381afa1649231e88e726
+      toggle_helper: input_boolean.awtrix_weer
+      my_sensor: weather.knmi_thuis
+      language: nl
+      show_windspeed: false
+      push_icon: '0'
+- id: '1703757074281'
+  alias: 'Awtrix: stroomverbruik'
+  description: ''
+  use_blueprint:
+    path: smarthomejunkie/awtrix_create_sensor_app.yaml
+    input:
+      awtrix_displays:
+      - 1bb1ba599b35381afa1649231e88e726
+      toggle_helper: input_boolean.awtrix_stroomverbruik
+      my_sensor: sensor.p1_meter_active_power
+      my_icon: '26337'
+      push_icon: '0'
+      low_value_text_color:
+      - 251
+      - 255
+      - 0
+- id: '1703757729106'
+  alias: 'Awtrix: Femke reistijd'
+  description: ''
+  use_blueprint:
+    path: smarthomejunkie/awtrix_create_sensor_app.yaml
+    input:
+      awtrix_displays:
+      - 1bb1ba599b35381afa1649231e88e726
+      toggle_helper: input_boolean.awtrix_femke_onderweg
+      my_sensor: sensor.reistijd_femke
+      my_icon: '49159'
+      push_icon: '0'
+- id: '1703757916409'
+  alias: 'Awtrix: Femke onderweg (input boolean)'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.activiteit_femke
+    to: Onderweg
+    id: onderweg
+    from:
+  - platform: state
+    entity_id:
+    - sensor.activiteit_femke
+    id: niet_onderweg
+    from: Onderweg
+    to:
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - onderweg
+    then:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.awtrix_femke_onderweg
+      data: {}
+    else:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.awtrix_femke_onderweg
+      data: {}
+  mode: single
+- id: '1703840902509'
+  alias: 'Awtrix: aan'
+  description: ' als iemand wakker/thuis is'
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.iedereen_slaapt
+    to: 'off'
+    from: 'on'
+  - platform: state
+    entity_id:
+    - binary_sensor.iemand_thuis
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.awtrix_6d0e58_matrix
+  mode: single
+- id: '1703864163666'
+  alias: Toiletgebruik beneden
+  description: Teller +1 als er beweging is, om 03:00:00 resetten
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.toilet_bewegingssensor_occupancy
+    to: 'on'
+    from: 'off'
+    id: motion
+  - platform: time
+    at: 03:00:00
+    id: reset
+  condition: []
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - reset
+    then:
+    - service: counter.reset
+      target:
+        entity_id: counter.toiletgebruik_beneden
+      data: {}
+    else:
+    - service: counter.increment
+      target:
+        entity_id: counter.toiletgebruik_beneden
+      data: {}
+  mode: single

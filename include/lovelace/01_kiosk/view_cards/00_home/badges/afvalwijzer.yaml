@@ -1,0 +1,7 @@
+type: entity
+entity: sensor.afvalwijzer_next_date
+tap_action:
+  action: navigate
+  navigation_path: /lovelace-kiosk/afvalwijzer
+use_entity_picture: false
+icon_color: green

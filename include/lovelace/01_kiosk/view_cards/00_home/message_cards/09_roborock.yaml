@@ -1,0 +1,18 @@
+type: conditional
+view_layout:
+  grid-column: 'span 1'
+conditions:
+  - condition: state
+    entity: binary_sensor.roborock_opvangbak_vol
+    state: 'on'
+card:
+  type: tile
+  entity: binary_sensor.roborock_opvangbak_vol
+  icon: mdi:delete
+  vertical: true
+  state_content: last-changed
+  tap_action:
+    action: call-service
+    service: counter.reset
+    target:
+      entity_id: counter.roborock_schoonmaakbeurten
