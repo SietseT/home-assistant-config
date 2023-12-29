@@ -1,0 +1,6 @@
+type: custom:mushroom-title-card
+view_layout:
+  grid-column: 'span 2'
+  show:
+    mediaquery: "(min-width: 800px)"
+title: Eerste verdieping

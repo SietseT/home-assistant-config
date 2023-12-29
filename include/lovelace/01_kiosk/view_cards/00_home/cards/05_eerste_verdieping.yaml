@@ -1,0 +1,11 @@
+type: custom:layout-card
+layout_type: custom:grid-layout
+view_layout:
+  grid-area: eerste_verdieping
+layout:
+  grid-template-columns: repeat(2, 1fr)
+  grid-template-rows: auto
+  mediaquery:
+    "(max-width: 800px)":
+      grid-template-columns: 100%
+cards: !include_dir_list /config/include/lovelace/01_kiosk/view_cards/00_home/room_cards/01_eerste_verdieping/
