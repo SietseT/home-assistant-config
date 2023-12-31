@@ -6,4 +6,4 @@ back_path: /lovelace-kiosk/home
 icon: mdi:flower
 type: custom:grid-layout
 layout: !include /config/include/lovelace/00_general/04_layout/three_column_grid.yaml
-cards: !include_dir_list /config/include/lovelace/01_kiosk/view_cards/00_beneden/04_tuin/
+cards: !include_dir_list /config/include/lovelace/01_kiosk/view_cards/01_beneden/04_tuin/

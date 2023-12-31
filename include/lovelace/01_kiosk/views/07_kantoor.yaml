@@ -1,9 +1,10 @@
-title: Hal
-path: hal
+title: Kantoor
+path: kantoor
 theme: mushroom_no_borders
 subview: true
 back_path: /lovelace-kiosk/home
-icon: mdi:coat-rack
+icon: mdi:office
+badges: []
 type: custom:grid-layout
 layout: !include /config/include/lovelace/00_general/04_layout/three_column_grid.yaml
-cards: !include_dir_list /config/include/lovelace/01_kiosk/view_cards/01_beneden/03_hal/
+cards: !include_dir_list /config/include/lovelace/01_kiosk/view_cards/02_eerste_verdieping/01_kantoor/

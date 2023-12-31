@@ -1,0 +1,21 @@
+type: grid
+title: Sensoren
+square: false
+columns: 2
+cards:
+  - type: tile
+    entity: sensor.kantoor_bewegingssensor_temperature
+    vertical: false
+    name: Temperatuur
+  - type: tile
+    entity: sensor.kantoor_bewegingssensor_illuminance_lux
+    vertical: false
+    name: Licht
+  - type: tile
+    entity: binary_sensor.kantoor_bewegingssensor_occupancy
+    vertical: false
+    name: Beweging
+    state_content: last-changed
+
+
+

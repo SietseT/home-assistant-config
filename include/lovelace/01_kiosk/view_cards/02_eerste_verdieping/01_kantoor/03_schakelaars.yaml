@@ -1,0 +1,15 @@
+type: grid
+title: Schakelaars
+square: false
+columns: 2
+cards:
+  - type: custom:mushroom-template-card
+    primary: Bureau power
+    icon: mdi:monitor
+    icon_color: "{{ 'blue' if state_is('binary_sensor.bureau_in_gebruik', 'on') }}"
+    layout: vertical
+    entity: sensor.kantoor_bureau_stekker_power
+    secondary: "{{ states(entity) }} W"
+    fill_container: true
+    tap_action:
+      action: more-info

@@ -1,0 +1,15 @@
+type: grid
+title: Media
+square: false
+columns: 1
+cards:
+  - type: custom:mini-media-player
+    entity: media_player.kantoor_sonos
+    name: Sonos
+    icon: mdi:speaker-wireless
+    artwork: material
+    idle_view:
+      when_idle: true
+    hide:
+      source: true
+      power: true
