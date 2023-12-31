@@ -1,11 +1,11 @@
 type: custom:stack-in-card
 cards:
   - type: custom:mushroom-template-card
-    primary: Kantoor
-    icon: mdi:monitor
+    primary: Kledingkamer
+    icon: mdi:hanger
     icon_color: blue
     layout: horizontal
-    entity: light.kantoor_plafondlamp
+    entity: light.kledingkamer
     secondary: >
       {% set hum = (area_entities(area_id(entity)) | select('is_state_attr', 'device_class', 'humidity') | reject('is_hidden_entity') | map('states') | select('is_number') | map('float') | list or [0]) | average | round(0) %}
       {% set temp = (area_entities(area_id(entity)) | select('is_state_attr', 'device_class', 'temperature') | reject('is_hidden_entity') | map('states') | select('is_number') | map('float') | list or [0]) | average | round(1) %}
@@ -13,34 +13,20 @@ cards:
       {{ [ (temp ~ '°C') if temp, (lux ~ ' lux') if lux, (hum ~ '%') if hum] | select() | join(' | ') }}
     tap_action:
       action: navigate
-      navigation_path: kantoor
+      navigation_path: kledingkamer
   - type: horizontal-stack
     cards:
       - type: custom:mushroom-template-card
-        entity: light.kantoor_plafondlamp
+        entity: light.kledingkamer
         layout: vertical
-        icon: "{{ 'mdi:lightbulb' if is_state(entity, 'on') else 'mdi:lightbulb-off' }}"
+        icon: "{{ 'mdi:lightbulb-group' if is_state(entity, 'on') else 'mdi:lightbulb-group-off' }}"
         icon_color: "{{ 'yellow' if is_state(entity, 'on') }}"
         badge_icon: "{{ 'mdi:alert' if expand(entity) | selectattr('state', 'in', ['unavailable', 'unknown']) | list | count > 0 }}"
         badge_color: red
       - type: custom:mushroom-template-card
-        entity: binary_sensor.bureau_in_gebruik
+        entity: binary_sensor.kledingkamer_bewegingssensor_occupancy
         layout: vertical
-        icon: mdi:desk
+        icon: "{{ 'mdi:motion-sensor' if is_state(entity, 'on') else 'mdi:motion-sensor-off' }}"
         icon_color: "{{ 'green' if is_state(entity, 'on') }}"
         badge_icon: "{{ 'mdi:alert' if expand(entity) | selectattr('state', 'in', ['unavailable', 'unknown']) | list | count > 0 }}"
-        badge_color: red
-      - type: custom:mushroom-template-card
-        entity: light.awtrix_6d0e58_matrix
-        layout: vertical
-        icon: mdi:clock-digital
-        icon_color: "{{ 'teal' if is_state(entity, 'on') }}"
-        badge_icon: "{{ 'mdi:alert' if expand(entity) | selectattr('state', 'in', ['unavailable', 'unknown']) | list | count > 0 }}"
-        badge_color: red
-      - type: custom:mushroom-template-card
-        entity: media_player.kantoor_sonos
-        layout: vertical
-        icon: "{{ 'mdi:speaker' if not is_state(entity, ['unavailable', 'unknown', 'off', 'paused']) else 'mdi:speaker-off' }}"
-        icon_color: "{{ 'green' if not states(entity) in ['unavailable', 'unknown', 'off', 'paused'] }}"
-        badge_icon: "{{ 'mdi:alert' if is_state(entity, ['unavailable', 'unknown']) }}"
         badge_color: red
