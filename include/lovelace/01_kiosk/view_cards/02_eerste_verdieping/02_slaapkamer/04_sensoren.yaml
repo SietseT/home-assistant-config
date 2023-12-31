@@ -1,0 +1,27 @@
+type: grid
+title: Sensoren
+square: false
+columns: 2
+cards:
+  - type: tile
+    entity: sensor.slaapkamer_bewegingssensor_temperature
+    vertical: false
+    name: Temperatuur
+  - type: tile
+    entity: sensor.slaapkamer_bewegingssensor_illuminance_lux
+    vertical: false
+    name: Licht
+  - type: tile
+    entity: binary_sensor.slaapkamer_bewegingssensor_occupancy
+    vertical: false
+    name: Beweging
+    state_content: last-changed
+  - type: custom:mushroom-template-card
+    primary: "{{ 'Iemand slaapt' if is_state(entity, 'on') else 'Niemand slaapt' }}"
+    icon: "{{ 'mdi:sleep' if is_state(entity, 'on') else 'mdi:sleep-off' }}"
+    icon_color: "{{ 'indigo' if is_state(entity, 'on') }}"
+    entity: binary_sensor.iemand_slaapt
+    fill_container: true
+
+
+
