@@ -1,0 +1,28 @@
+type: grid
+title: Sensoren
+square: false
+columns: 2
+cards:
+  - type: tile
+    entity: sensor.badkamer_temperatuursensor_temperature
+    vertical: false
+    name: Temperatuur
+  - type: tile
+    entity: sensor.badkamer_temperatuursensor_humidity
+    vertical: false
+    name: Luchtvochtigheid
+  - type: tile
+    entity: sensor.badkamer_illuminance
+    vertical: false
+    name: Licht
+  - type: tile
+    entity: binary_sensor.badkamer_motion_detection
+    vertical: false
+    name: Beweging
+    state_content: last-changed
+  - type: custom:mushroom-template-card
+    primary: "Douche: {{ 'actief' if is_state(entity, 'on') else 'leeg' }}"
+    icon: mdi:shower-head
+    icon_color: "{{ 'blue' if is_state(entity, 'on') }}"
+    entity: binary_sensor.badkamer_bewegingssensor_douche_occupancy
+    fill_container: true

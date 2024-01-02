@@ -1,0 +1,26 @@
+type: grid
+title: Warm water
+square: false
+columns: 2
+cards:
+  - type: tile
+    features:
+      - type: target-temperature
+      - type: water-heater-operation-modes
+        operation_modes:
+          - 'off'
+          - heat_pump
+          - performance
+    entity: water_heater.altherma
+    state_content: current_temperature
+    name: Warmwatertank
+  - type: gauge
+    entity: sensor.altherma_tank_temperature
+    needle: true
+    severity:
+      green: 45
+      yellow: 40
+      red: 0
+    name: Temperatuur water
+    min: 30
+    max: 50

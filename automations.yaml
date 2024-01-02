@@ -360,7 +360,7 @@
       target:
         entity_id:
         - media_player.galaxy_tab_a8
-        - media_player.unnamed_room
+        - media_player.kantoor_sonos
     - if:
       - condition: template
         value_template: '{{ true }}'
@@ -379,6 +379,13 @@
       target:
         entity_id: input_boolean.awtrix_deurbel_notificatie
       data: {}
+    - service: notify.sietse_pc
+      data:
+        message: Er staat iemand voor de deur!
+        data:
+          image: /api/camera_proxy/camera.g4_doorbell
+          url: /lovelace-kiosk/popup
+          duration: 20
   - service: notify.all_ios_devices
     data:
       title: "\U0001F514 TRIINNGGG \U0001F514"
