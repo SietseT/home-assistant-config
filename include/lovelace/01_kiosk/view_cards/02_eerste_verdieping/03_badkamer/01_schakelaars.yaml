@@ -1,5 +1,5 @@
 type: grid
-title: Lampen
+title: Schakelaars
 square: false
 columns: 2
 cards:
@@ -9,3 +9,9 @@ cards:
     show_brightness_control: true
     collapsible_controls: true
     fill_container: true
+  - type: tile
+    entity: input_boolean.bad_modus
+    tap_action:
+      action: toggle
+    icon_tap_action:
+      action: more-info
