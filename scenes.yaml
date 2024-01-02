@@ -42,17 +42,24 @@
       - stop_hue_effect
       supported_color_modes:
       - color_temp
-      color_mode:
-      brightness:
-      color_temp_kelvin:
-      color_temp:
+      color_mode: color_temp
+      brightness: 128
+      color_temp_kelvin: 2732
+      color_temp: 366
       hs_color:
+      - 28.327
+      - 64.71
       rgb_color:
+      - 255
+      - 167
+      - 89
       xy_color:
+      - 0.524
+      - 0.387
       effect:
       friendly_name: Woonkamer sidetable
       supported_features: 44
-      state: 'off'
+      state: 'on'
     light.keuken_aap:
       supported_color_modes:
       - onoff
@@ -68,21 +75,6 @@
       friendly_name: Keuken kookeiland ledstrip
       supported_features: 0
       state: 'on'
-    light.woonkamer_eettafel:
-      supported_color_modes:
-      - brightness
-      color_mode: brightness
-      brightness: 76
-      entity_id:
-      - light.xxl_liva_zwart_ombre_2
-      - light.xxl_liva_zwart_ombre_4
-      - light.xxl_mia_black_ombre_1
-      - light.xxl_mia_black_ombre_3
-      - light.xxl_mia_black_ombre_5
-      icon: mdi:lightbulb-group
-      friendly_name: Woonkamer eettafel
-      supported_features: 0
-      state: 'on'
     switch.kerstboom_stekker:
       icon: mdi:pine-tree
       friendly_name: Kerstboom stekker
@@ -91,17 +83,17 @@
       supported_color_modes:
       - hs
       color_mode: hs
-      brightness: 255
+      brightness: 170
       hs_color:
-      - 33
-      - 100
+      - 0
+      - 0
       rgb_color:
       - 255
-      - 140
-      - 0
+      - 255
+      - 255
       xy_color:
-      - 0.596
-      - 0.388
+      - 0.323
+      - 0.329
       friendly_name: Woonkamer hoeklamp
       supported_features: 0
       state: 'on'
@@ -116,8 +108,6 @@
     light.keuken_aap:
       entity_only: true
     light.keuken_kookeiland_ledstrip:
-      entity_only: true
-    light.woonkamer_eettafel:
       entity_only: true
     switch.kerstboom_stekker:
       entity_only: true
@@ -148,24 +138,6 @@
       friendly_name: Keuken aap
       supported_features: 0
       state: 'on'
-    light.woonkamer_voetlamp:
-      effect_list:
-      - blink
-      - breathe
-      - okay
-      - channel_change
-      - candle
-      - finish_effect
-      - stop_effect
-      - stop_hue_effect
-      supported_color_modes:
-      - brightness
-      color_mode: brightness
-      brightness: 197
-      effect:
-      friendly_name: Woonkamer voetlamp
-      supported_features: 44
-      state: 'on'
     light.aanrecht:
       effect_list:
       - blink
@@ -182,6 +154,7 @@
       brightness: 166
       effect:
       entity_id:
+      - light.dresden_elektronik_conbee_ii_keuken_aanrecht_zha_group_0x0004
       - light.keuken_1
       - light.keuken_2
       - light.keuken_3
@@ -256,27 +229,28 @@
       - stop_hue_effect
       supported_color_modes:
       - color_temp
-      color_mode:
-      brightness:
-      color_temp_kelvin:
-      color_temp:
+      color_mode: color_temp
+      brightness: 128
+      color_temp_kelvin: 2732
+      color_temp: 366
       hs_color:
+      - 28.327
+      - 64.71
       rgb_color:
+      - 255
+      - 167
+      - 89
       xy_color:
+      - 0.524
+      - 0.387
       effect:
       friendly_name: Woonkamer sidetable
       supported_features: 44
-      state: 'off'
-    switch.kerstboom_stekker:
-      icon: mdi:pine-tree
-      friendly_name: Kerstboom stekker
       state: 'on'
   metadata:
     light.woonkamer_eettafel:
       entity_only: true
     light.keuken_aap:
-      entity_only: true
-    light.woonkamer_voetlamp:
       entity_only: true
     light.aanrecht:
       entity_only: true
@@ -287,8 +261,6 @@
     light.woonkamer_plafondlamp:
       entity_only: true
     light.woonkamer_sidetable:
-      entity_only: true
-    switch.kerstboom_stekker:
       entity_only: true
   icon: mdi:weather-sunset-up
 - id: '1669653726261'

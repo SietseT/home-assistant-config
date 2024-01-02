@@ -826,6 +826,9 @@
       entity_id: sensor.kantoor_bewegingssensor_illuminance_lux
       below: input_number.lux_kantoor
       enabled: true
+    - condition: time
+      after: 06:00:00
+      before: 00:00:00
   action:
   - if:
     - condition: sun
