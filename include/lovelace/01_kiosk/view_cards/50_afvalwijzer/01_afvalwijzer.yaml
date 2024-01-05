@@ -1,0 +1,50 @@
+type: grid
+square: false
+columns: 2
+cards:
+  - type: entities
+    entities:
+      - entity: sensor.afvalwijzer_gft
+        name: GFT
+        icon: mdi:leaf
+        secondary_info: none
+      - entity: sensor.afvalwijzer_papier
+        name: Papier
+        icon: mdi:package
+      - entity: sensor.afvalwijzer_pmd
+        icon: mdi:bottle-soda
+        name: PMD
+      - entity: sensor.afvalwijzer_restafval
+        icon: mdi:trash-can
+        name: Restafval
+    show_header_toggle: false
+    state_color: false
+    header:
+      type: picture
+      image: https://ha.sietsetrommelen.nl/local/images/afvalwijzer.png
+      tap_action:
+        action: none
+      hold_action:
+        action: none
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-template-card
+        primary: Huidige datum
+        secondary: '{{ as_timestamp(now()) | timestamp_custom(''%d-%m-%Y'', true, '''') }}'
+        icon: mdi:calendar
+      - type: entities
+        entities:
+          - entity: sensor.afvalwijzer_next_date
+            icon: mdi:recycle
+            secondary_info: none
+            name: Volgende ophaalmoment
+          - entity: sensor.afvalwijzer_next_type
+            name: Soort
+          - entity: sensor.afvalwijzer_today
+            name: Vandaag
+            icon: mdi:calendar-today
+          - entity: sensor.afvalwijzer_tomorrow
+            icon: mdi:calendar
+            name: Morgen
+        show_header_toggle: false
+        state_color: false

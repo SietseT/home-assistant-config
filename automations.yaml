@@ -1484,6 +1484,7 @@
       language: nl
       show_windspeed: false
       push_icon: '0'
+      show_text: false
 - id: '1703757074281'
   alias: 'Awtrix: stroomverbruik'
   description: ''
