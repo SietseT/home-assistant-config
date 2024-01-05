@@ -336,6 +336,10 @@
     target:
       entity_id: scene.woonkamer_avond
     metadata: {}
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.tuin
   mode: single
 - id: '1671461388682'
   alias: Deurbel

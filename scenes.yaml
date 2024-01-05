@@ -43,7 +43,7 @@
       supported_color_modes:
       - color_temp
       color_mode: color_temp
-      brightness: 128
+      brightness: 51
       color_temp_kelvin: 2732
       color_temp: 366
       hs_color:
@@ -79,23 +79,23 @@
       icon: mdi:pine-tree
       friendly_name: Kerstboom stekker
       state: 'on'
-    light.woonkamer_hoeklamp:
+    light.woonkamer_voetlamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - candle
+      - finish_effect
+      - stop_effect
+      - stop_hue_effect
       supported_color_modes:
-      - hs
-      color_mode: hs
-      brightness: 170
-      hs_color:
-      - 0
-      - 0
-      rgb_color:
-      - 255
-      - 255
-      - 255
-      xy_color:
-      - 0.323
-      - 0.329
-      friendly_name: Woonkamer hoeklamp
-      supported_features: 0
+      - brightness
+      color_mode: brightness
+      brightness: 153
+      effect:
+      friendly_name: Woonkamer voetlamp
+      supported_features: 44
       state: 'on'
   icon: mdi:lightbulb-night
   metadata:
@@ -111,7 +111,7 @@
       entity_only: true
     switch.kerstboom_stekker:
       entity_only: true
-    light.woonkamer_hoeklamp:
+    light.woonkamer_voetlamp:
       entity_only: true
 - id: '1669653657868'
   name: 'Woonkamer: ochtend'
@@ -230,7 +230,7 @@
       supported_color_modes:
       - color_temp
       color_mode: color_temp
-      brightness: 128
+      brightness: 54
       color_temp_kelvin: 2732
       color_temp: 366
       hs_color:
@@ -247,6 +247,24 @@
       friendly_name: Woonkamer sidetable
       supported_features: 44
       state: 'on'
+    light.woonkamer_voetlamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - candle
+      - finish_effect
+      - stop_effect
+      - stop_hue_effect
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 107
+      effect:
+      friendly_name: Woonkamer voetlamp
+      supported_features: 44
+      state: 'on'
   metadata:
     light.woonkamer_eettafel:
       entity_only: true
@@ -261,6 +279,8 @@
     light.woonkamer_plafondlamp:
       entity_only: true
     light.woonkamer_sidetable:
+      entity_only: true
+    light.woonkamer_voetlamp:
       entity_only: true
   icon: mdi:weather-sunset-up
 - id: '1669653726261'
@@ -547,16 +567,23 @@
       friendly_name: Tuin
       supported_features: 44
       state: 'off'
-    light.woonkamer_hoeklamp:
+    light.woonkamer_voetlamp:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - candle
+      - finish_effect
+      - stop_effect
+      - stop_hue_effect
       supported_color_modes:
-      - hs
+      - brightness
       color_mode:
       brightness:
-      hs_color:
-      rgb_color:
-      xy_color:
-      friendly_name: Woonkamer hoeklamp
-      supported_features: 0
+      effect:
+      friendly_name: Woonkamer voetlamp
+      supported_features: 44
       state: 'off'
   icon: mdi:lightbulb-night
   metadata:
@@ -574,5 +601,5 @@
       entity_only: true
     light.tuin:
       entity_only: true
-    light.woonkamer_hoeklamp:
+    light.woonkamer_voetlamp:
       entity_only: true
