@@ -1,0 +1,28 @@
+type: custom:stack-in-card
+view_layout:
+  grid-column: 'span 2'
+cards:
+  - type: vertical-stack
+    cards:
+      - type: tile
+        entity: sensor.woonkamer_temperatuur
+        tap_action:
+          action: navigate
+          navigation_path: /dashboard-energie/verwarming
+        name: Woonkamer
+        icon: mdi:home-floor-0
+        state_content:
+          - state
+          - last-changed
+      - type: custom:gap-card
+        height: 12
+      - type: tile
+        entity: sensor.eerste_verdieping_sensor_temperature
+        tap_action:
+          action: navigate
+          navigation_path: /dashboard-energie/verwarming
+        name: Eerste verdieping
+        icon: mdi:home-floor-1
+        state_content:
+          - state
+          - last-changed
