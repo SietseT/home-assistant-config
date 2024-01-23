@@ -1,0 +1,7 @@
+style:
+  hui-vertical-stack-card$hui-horizontal-stack-card$: |
+    @media (max-width: 800px) {
+      mushroom-template-card:not(:first-child) {
+        display: none
+      }
+    }

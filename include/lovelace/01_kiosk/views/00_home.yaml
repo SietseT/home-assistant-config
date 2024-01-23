@@ -13,13 +13,12 @@ layout:
     "buiten tweede_verdieping"
   mediaquery:
     "(max-width: 800px)":
-      grid-template-columns: 100%
+      grid-template-columns: 'repeat(2, 1fr)'
       grid-template-areas: |
-        "badges"
-        "messages"
-        "beneden"
-        "buiten"
-        "eerste_verdieping"
-        "tweede_verdieping"
+        "badges badges"
+        "messages messages"
+        "beneden beneden"
+        "eerste_verdieping eerste_verdieping"
+        "buiten tweede_verdieping"
 
 cards: !include_dir_list /config/include/lovelace/01_kiosk/view_cards/00_home/cards/

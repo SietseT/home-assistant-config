@@ -2,30 +2,70 @@ type: custom:stack-in-card
 view_layout:
   grid-column: 'span 2'
 cards:
-  - type: grid
-    columns: 2
-    square: false
-    cards:
-      - type: custom:mushroom-template-card
-        entity: sensor.electricity_price_thuis
-        primary: Prijs
-        secondary: "€ {{ states(entity)|float|round(2)|string|replace('.', ',') }}"
-        icon: mdi:flash
-        icon_color: blue
-      - type: custom:mushroom-template-card
-        entity: sensor.electricity_price_thuis
-        primary: Gemiddeld
-        secondary: "€ {{ state_attr(entity, 'avg_price')|float|round(2)|string|replace('.', ',') }}"
-      - type: custom:mushroom-template-card
-        entity: sensor.electricity_price_thuis
-        icon: mdi:currency-eur
-        icon_color: yellow
-        primary: Goedkoop
-        secondary: >
-          {%- set sensor = 'sensor.nordpool_kwh_nl_eur_3_09_0' -%}
-          {% from "cheapest_energy_hours.jinja" import cheapest_energy_hours %}
-          {{ as_timestamp(cheapest_energy_hours(sensor=sensor, look_ahead=true)) | timestamp_custom('%H:%M') }} uur
-      - type: custom:mushroom-template-card
-        entity: sensor.monthly_cost_thuis
-        primary: Maandkosten
-        secondary: "€ {{ states(entity)|float|round(2)|string|replace('.', ',') }}"
+  - type: custom:apexcharts-card
+    experimental:
+      color_threshold: true
+    graph_span: 36h
+    header:
+      title: Energieprijs
+      show: false
+      colorize_states: true
+    now:
+      show: true
+      color: red
+    span:
+      start: day
+    series:
+      - entity: sensor.nordpool_kwh_nl_eur_3_09_0
+        name: Actueel
+        type: column
+        show:
+          extremas: false
+        float_precision: 2
+        data_generator: |
+          return (entity.attributes.raw_today.map((item) =>
+                      {
+                        return [new Date(item["start"]).getTime() + 1800000, item["value"]];
+                      })).concat(
+                        entity.attributes.raw_tomorrow.map((item) => {
+                          return [new Date(item["start"]).getTime() + 1800000, item["value"]];
+                        }
+                      ));
+        color_threshold:
+          - value: 0
+            color: '#04822e'
+          - value: 0.16
+            color: '#12A141'
+          - value: 0.22
+            color: '#79B92C'
+          - value: 0.28
+            color: '#C4D81D'
+          - value: 0.34
+            color: '#F3DC0C'
+          - value: 0.4
+            color: '#EFA51E'
+          - value: 0.46
+            color: '#E76821'
+          - value: 0.52
+            color: '#DC182F'
+    yaxis:
+      - id: '1'
+        align_to: 0.01
+        decimals: 2
+        apex_config:
+          title:
+            text: €/kWh
+          forceNiceScale: true
+    apex_config:
+      chart:
+        height: 125px
+      xaxis:
+        type: datetime
+        tooltip:
+          enabled: false
+      tooltip:
+        x:
+          format: HH:00
+      plotOptions:
+        bar:
+          columnWidth: 80%

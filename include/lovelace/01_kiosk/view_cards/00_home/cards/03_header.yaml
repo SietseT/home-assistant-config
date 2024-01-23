@@ -2,6 +2,8 @@ type: custom:layout-card
 layout_type: custom:grid-layout
 view_layout:
   grid-area: header
+  show:
+    mediaquery: !include /config/include/lovelace/00_general/04_layout/media_query_mobile.yaml
 layout:
   grid-template-columns: repeat(8, 1fr)
   grid-template-rows: auto

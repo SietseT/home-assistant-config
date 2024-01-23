@@ -1,4 +1,5 @@
 type: custom:mushroom-title-card
+card_mod: !include /config/include/lovelace/00_general/04_layout/room_card_hide_mobile.yaml
 view_layout:
   grid-column: 'span 2'
   show:
