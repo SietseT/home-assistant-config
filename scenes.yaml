@@ -154,7 +154,6 @@
       brightness: 166
       effect:
       entity_id:
-      - light.dresden_elektronik_conbee_ii_keuken_aanrecht_zha_group_0x0004
       - light.keuken_1
       - light.keuken_2
       - light.keuken_3

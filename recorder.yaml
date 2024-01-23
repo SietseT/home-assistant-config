@@ -1,0 +1,26 @@
+db_url: !secret mariadb_url
+purge_keep_days: 30
+commit_interval: 20
+exclude:
+  domains:
+    - automation
+    - button
+    - image
+    - input_number
+    - number
+    - scene
+    - script
+    - select
+    - text
+    - time
+    - update
+  entity_globs:    
+    - binary_sensor.awtrix_*
+    - binary_sensor.galaxy_tab_a8_*
+    - binary_sensor.*_low_battery_level
+    - binary_sensor.*_consumer_connected
+    - binary_sensor.nordpool_least_expensive_8_hours
+    - binary_sensor.thermostaat_verdeler_*
+    - lock.*_child_lock
+  entities:
+    - binary_sensor.electricity_price_cheap_or_normal

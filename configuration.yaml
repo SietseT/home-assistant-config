@@ -39,3 +39,6 @@ tts:
 lovelace: !include /config/include/configuration/lovelace.yaml
 frontend:
   themes: !include_dir_merge_named /config/include/lovelace/00_general/03_themes
+recorder: !include recorder.yaml
+
+influxdb: !include /config/include/integrations/influxdb.yaml

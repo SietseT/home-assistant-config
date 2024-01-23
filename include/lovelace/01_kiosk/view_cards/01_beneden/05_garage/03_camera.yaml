@@ -3,5 +3,9 @@ title: Camera
 square: false
 columns: 1
 cards:
-  - type: 'custom:webrtc-camera'
-    url: !secret camera_garage
+  - type: picture-entity
+    show_state: false
+    show_name: false
+    camera_view: live
+    entity: camera.garage
+    aspect_ratio: '16:9'

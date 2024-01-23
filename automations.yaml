@@ -357,6 +357,7 @@
       data: {}
       target:
         entity_id: script.kiosk_popup_view
+      enabled: true
     - service: media_player.play_media
       data:
         media_content_id: http://192.168.1.111:8123/local/sounds/doorbell1.mp3
@@ -575,10 +576,14 @@
       - binary_sensor.is_donker
       to: 'off'
     alias: Wacht tot het niet meer donker is
-  - service: scene.turn_on
-    target:
-      entity_id: scene.ochtend_lichten_uit
+  - service: light.turn_off
     metadata: {}
+    data: {}
+    target:
+      area_id:
+      - woonkamer
+      - keuken
+      - tuin
   mode: single
 - id: '1676715508365'
   alias: 'Garagekamer: bewegingssensor'
@@ -1188,14 +1193,6 @@
   - platform: sun
     event: sunset
     offset: -00:30:00
-  - platform: numeric_state
-    entity_id:
-    - sensor.tuin_bewegingssensor_illuminance_lux
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
-    below: 200
   condition:
   - condition: state
     entity_id: light.tuin
@@ -1485,6 +1482,7 @@
       show_windspeed: false
       push_icon: '0'
       show_text: false
+      show_humidity: false
 - id: '1703757074281'
   alias: 'Awtrix: stroomverbruik'
   description: ''
@@ -1501,6 +1499,8 @@
       - 251
       - 255
       - 0
+      my_template_sensor: '{{ states(''sensor.p1_meter_active_power'') | round(1)
+        }} kW'
 - id: '1703757729106'
   alias: 'Awtrix: Femke reistijd'
   description: ''

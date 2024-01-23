@@ -3,5 +3,9 @@ title: Camera
 square: false
 columns: 1
 cards:
-  - type: 'custom:webrtc-camera'
-    url: !secret camera_woonkamer
+  - type: picture-entity
+    show_state: false
+    show_name: false
+    camera_view: live
+    entity: camera.woonkamer
+    aspect_ratio: '16:9'

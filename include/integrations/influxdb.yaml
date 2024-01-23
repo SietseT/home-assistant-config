@@ -1,0 +1,32 @@
+host: 192.168.1.111
+port: 8086
+database: !secret influxdb_database
+username: !secret influxdb_username
+password: !secret influxdb_password
+max_retries: 3
+default_measurement: state
+include: 
+  entity_globs:
+    - sensor.altherma_*_energy_consumption
+    - sensor.*_battery
+    - sensor.*_energy
+    - sensor.*_humidity
+    - sensor.*_pressure
+    - sensor.*_temperature
+    - sensor.k_723_nn_tire_pressure_*
+    - sensor.knmi_thuis_*
+    - sensor.*verbruik_energie
+    - sensor.p1_meter_total_*
+    - sensor.warmtepomp_*
+  entities:
+    - sensor.electricity_price_thuis
+    - sensor.energieverbruik_totaal
+    - sensor.k_723_nn_odometer
+    - sensor.roborock_s7_maxv_cleaning_time
+    - sensor.solaredge_energy_this_month
+    - sensor.warmtepomp_cop
+exclude:
+  entities:
+    - sensor.knmi_thuis_korte_dagverwachting
+    - sensor.knmi_thuis_omschrijving
+    - sensor.knmi_thuis_plaats

@@ -1,0 +1,4 @@
+grid-template-columns: 'repeat(2, 1fr)'
+mediaquery:
+  "(max-width: 800px)":
+    grid-template-columns: 100%
