@@ -1,0 +1,11 @@
+type: template
+entity: switch.garage_deur
+icon: "{% if is_state('binary_sensor.garage_deursensor_contact', 'on') %} mdi:garage-open {% else %} mdi:garage {% endif %}"
+icon_color: "{% if is_state('binary_sensor.garage_deursensor_contact', 'on') %} red {% else %} green {% endif %}"
+content: "{% if is_state('binary_sensor.garage_deursensor_contact', 'on') %} Open {% else %} Dicht {% endif %}"
+hold_action:
+  action: none
+tap_action:
+  action: more-info
+double_tap_action:
+  action: toggle
