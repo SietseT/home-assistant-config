@@ -1,0 +1,42 @@
+type: custom:stack-in-card
+cards:
+  - type: custom:mushroom-template-card
+    primary: GFT
+    secondary: |-
+      {% set date_string = states(entity) %}
+      {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
+      {% set seconds = dt-as_timestamp(now()) %}
+      {{(seconds / 86400)|round()}} dag(en)
+    icon: mdi:tree
+    entity: sensor.afvalwijzer_gft
+    icon_color: green
+  - type: custom:mushroom-template-card
+    primary: Papier
+    secondary: |-
+      {% set date_string = states(entity) %}
+      {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
+      {% set seconds = dt-as_timestamp(now()) %}
+      {{(seconds / 86400)|round()}} dag(en)
+    icon: mdi:package
+    entity: sensor.afvalwijzer_papier
+    icon_color: blue
+  - type: custom:mushroom-template-card
+    primary: PMD
+    secondary: |-
+      {% set date_string = states(entity) %}
+      {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
+      {% set seconds = dt-as_timestamp(now()) %}
+      {{(seconds / 86400)|round()}} dag(en)
+    icon: mdi:bottle-soda
+    entity: sensor.afvalwijzer_pmd
+    icon_color: orange
+  - type: custom:mushroom-template-card
+    primary: Restafval
+    secondary: |-
+      {% set date_string = states(entity) %}
+      {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
+      {% set seconds = dt-as_timestamp(now()) %}
+      {{(seconds / 86400)|round()}} dag(en)
+    icon: mdi:trash-can
+    entity: sensor.afvalwijzer_restafval
+    icon_color: black

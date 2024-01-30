@@ -1,7 +1,12 @@
-type: entity
+type: template
 entity: sensor.afvalwijzer_next_date
+icon: mdi:recycle
+icon_color: green
+content: |-
+  {% set date_string = states(entity) %}
+  {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
+  {% set seconds = dt-as_timestamp(now()) %}
+  {{(seconds / 86400)|round()}} dag(en)
 tap_action:
   action: navigate
   navigation_path: /lovelace-kiosk/afvalwijzer
-use_entity_picture: false
-icon_color: green

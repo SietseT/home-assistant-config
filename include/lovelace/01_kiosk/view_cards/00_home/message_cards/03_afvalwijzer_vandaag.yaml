@@ -10,3 +10,6 @@ card:
   icon_color: green
   primary: Vandaag
   secondary: "{{ states(entity) }}"
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kiosk/afvalwijzer
