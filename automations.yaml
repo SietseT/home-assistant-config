@@ -78,6 +78,8 @@
   - condition: state
     entity_id: binary_sensor.iemand_slaapt
     state: 'off'
+  - condition: time
+    after: 08:00:00
   action:
   - service: light.turn_on
     data:
@@ -321,6 +323,10 @@
     entity_id:
     - binary_sensor.is_donker
     to: 'on'
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
   condition:
   - condition: state
     entity_id: group.family
@@ -336,10 +342,6 @@
     target:
       entity_id: scene.woonkamer_avond
     metadata: {}
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id: light.tuin
   mode: single
 - id: '1671461388682'
   alias: Deurbel
@@ -553,29 +555,17 @@
   alias: 'Ochtend scene: uit als het licht is'
   description: ''
   trigger:
-  - platform: event
-    event_type: call_service
-    event_data:
-      domain: scene
-      service: turn_on
-      service_data:
-        entity_id:
-        - scene.woonkamer_ochtend
-  - platform: event
-    event_type: call_service
-    event_data:
-      domain: scene
-      service: turn_on
-      service_data:
-        entity_id: scene.woonkamer_ochtend
+  - platform: state
+    entity_id:
+    - binary_sensor.is_donker
+    to: 'off'
+    from: 'on'
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
   condition: []
   action:
-  - wait_for_trigger:
-    - platform: state
-      entity_id:
-      - binary_sensor.is_donker
-      to: 'off'
-    alias: Wacht tot het niet meer donker is
   - service: light.turn_off
     metadata: {}
     data: {}
@@ -584,6 +574,7 @@
       - woonkamer
       - keuken
       - tuin
+      - eerste_verdieping
   mode: single
 - id: '1676715508365'
   alias: 'Garagekamer: bewegingssensor'
@@ -1193,10 +1184,18 @@
   - platform: sun
     event: sunset
     offset: -00:30:00
+  - platform: state
+    entity_id:
+    - sensor.iemand_thuis
+    from: 'off'
+    to: 'on'
   condition:
   - condition: state
     entity_id: light.tuin
     state: 'off'
+  - condition: sun
+    after: sunset
+    after_offset: -00:30:00
   action:
   - service: light.turn_on
     target:
