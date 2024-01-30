@@ -6,7 +6,7 @@ content: |-
   {% set date_string = states(entity) %}
   {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
   {% set seconds = dt-as_timestamp(now()) %}
-  {{(seconds / 86400)|round()}} dag(en)
+  {{ (seconds / 86400)|round(method='ceil') }} dag(en)
 tap_action:
   action: navigate
   navigation_path: /lovelace-kiosk/afvalwijzer

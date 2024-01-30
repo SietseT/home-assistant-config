@@ -6,7 +6,7 @@ cards:
       {% set date_string = states(entity) %}
       {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
       {% set seconds = dt-as_timestamp(now()) %}
-      {{(seconds / 86400)|round()}} dag(en)
+      {{ (seconds / 86400)|round(method='ceil') }} dag(en)
     icon: mdi:tree
     entity: sensor.afvalwijzer_gft
     icon_color: green
@@ -16,7 +16,7 @@ cards:
       {% set date_string = states(entity) %}
       {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
       {% set seconds = dt-as_timestamp(now()) %}
-      {{(seconds / 86400)|round()}} dag(en)
+      {{ (seconds / 86400)|round(method='ceil') }} dag(en)
     icon: mdi:package
     entity: sensor.afvalwijzer_papier
     icon_color: blue
@@ -26,7 +26,7 @@ cards:
       {% set date_string = states(entity) %}
       {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
       {% set seconds = dt-as_timestamp(now()) %}
-      {{(seconds / 86400)|round()}} dag(en)
+      {{ (seconds / 86400)|round(method='ceil') }} dag(en)
     icon: mdi:bottle-soda
     entity: sensor.afvalwijzer_pmd
     icon_color: orange
@@ -36,7 +36,7 @@ cards:
       {% set date_string = states(entity) %}
       {% set dt = as_timestamp(strptime(date_string, "%d-%m-%Y")) %}
       {% set seconds = dt-as_timestamp(now()) %}
-      {{(seconds / 86400)|round()}} dag(en)
+      {{ (seconds / 86400)|round(method='ceil') }} dag(en)
     icon: mdi:trash-can
     entity: sensor.afvalwijzer_restafval
     icon_color: black
