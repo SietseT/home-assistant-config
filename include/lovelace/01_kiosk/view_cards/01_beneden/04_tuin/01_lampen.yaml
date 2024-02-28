@@ -16,8 +16,31 @@ cards:
     use_light_color: true
     show_color_temp_control: false
   - type: custom:mushroom-light-card
-    entity: light.tuin_verlichting
-    name: Overige verlichting
+    entity: light.tuin_borders
+    name: Borders
     show_brightness_control: true
     collapsible_controls: false
     fill_container: true
+  - type: custom:mushroom-light-card
+    entity: light.tuin_schutting_links
+    name: Schutting links
+    show_brightness_control: true
+    collapsible_controls: false
+    fill_container: true
+  - type: custom:mushroom-light-card
+    entity: light.tuin_spots
+    name: Spots
+    show_brightness_control: true
+    collapsible_controls: false
+    fill_container: true'
+  - type: custom:mushroom-template-card
+    primary: Kleurinstellingen
+    secondary: ''
+    icon: mdi:format-color-fill
+    hold_action:
+      action: none
+    double_tap_action:
+      action: none
+    tap_action:
+      action: navigate
+      navigation_path: /dashboard-instellingen/lampen

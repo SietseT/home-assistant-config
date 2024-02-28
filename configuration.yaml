@@ -5,6 +5,7 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.1.112
+    - 172.30.33.0/24 
 
 automation: !include automations.yaml
 climate: !include_dir_list /config/include/integrations/climate/
@@ -44,3 +45,5 @@ frontend:
 
 recorder: !include recorder.yaml
 influxdb: !include /config/include/integrations/influxdb.yaml
+
+ios: !include ios.yaml

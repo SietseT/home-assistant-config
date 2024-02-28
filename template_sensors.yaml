@@ -11,7 +11,7 @@
     state: >
       {%- if is_state("sensor.iphone_van_femke_ssid", "FeSie") or is_state("device_tracker.iphone_van_femke", "home") -%}
           Thuis      
-      {%- elif is_state("sensor.iphone_van_femke_ssid", "Visio Medewerkers") -%}
+      {%- elif is_state("sensor.iphone_van_femke_ssid", "Visio Medewerkers") or is_state("device_tracker.iphone_van_femke", "visio") -%}
           Werk
       {%- elif is_state("sensor.iphone_van_femke_activity", "Automotive") or is_state("sensor.iphone_van_femke_activity", "Unknown") -%}
           Onderweg
@@ -24,6 +24,8 @@
     state: >
       {%- if is_state("sensor.iphone_van_sietse_ssid", "FeSie") or is_state("device_tracker.iphone_van_sietse", "home") -%}
           Thuis
+      {%- elif is_state("device_tracker.iphone_van_sietse", "team_rockstars_hq") -%}
+          Werk
       {%- elif is_state("sensor.iphone_van_sietse_activity", "Automotive") or is_state("sensor.iphone_van_sietse_activity", "Unknown") -%}
           Onderweg
       {%- else -%}

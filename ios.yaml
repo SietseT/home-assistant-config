@@ -1,0 +1,11 @@
+actions:
+  - name: Garagedeur
+    background_color: "#8e8e93"
+    label:
+      text: "Garage open/dicht"
+      color: "#ffffff"
+    icon:
+      icon: garage
+      color: "#ffffff"
+    show_in_carplay: true
+    show_in_watch: true

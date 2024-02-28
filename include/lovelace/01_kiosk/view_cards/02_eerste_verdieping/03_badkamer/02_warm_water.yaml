@@ -15,7 +15,7 @@ cards:
     state_content: current_temperature
     name: Warmwatertank
   - type: gauge
-    entity: sensor.altherma_tank_temperature
+    entity: sensor.warmtepomp_watertanktemperature
     needle: true
     severity:
       green: 45

@@ -20,18 +20,23 @@
       motion_entity: binary_sensor.hal_trap_motion_detection
       no_motion_wait: 0
 - id: '1669629963423'
-  alias: 'Tuin: lampen uit'
+  alias: 'Tuin: nachtmodus'
   description: ''
   trigger:
-  - platform: time
-    at: '23:30:00'
-    id: time
-  condition: []
+  - platform: state
+    entity_id:
+    - binary_sensor.iedereen_slaapt
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.tuin_borders
+    state: 'on'
   action:
-  - service: light.turn_off
-    data: {}
+  - service: scene.turn_on
+    metadata: {}
     target:
-      entity_id: light.tuin
+      entity_id: scene.tuin_nacht
   mode: single
 - id: '1669644179785'
   alias: 'Kledingkamer: bewegingssensor'
@@ -45,7 +50,7 @@
       light_target:
         entity_id: light.kledingkamer
       brightness_sun_down: 180
-      enable_nighttime: true
+      enable_nighttime: false
       illuminance_level_input_number: input_number.lux_kledingkamer
       illuminance_level: 500
       no_motion_wait: 30
@@ -807,6 +812,10 @@
     target:
       entity_id: scene.woonkamer_avond
     metadata: {}
+  - service: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: scene.tuin_avond
   - wait_for_trigger:
     - platform: time
       at: 00:00:00
@@ -834,7 +843,7 @@
       below: input_number.lux_kantoor
       enabled: true
     - condition: time
-      after: 06:00:00
+      after: 07:00:00
       before: 00:00:00
   action:
   - if:
@@ -1183,24 +1192,38 @@
   trigger:
   - platform: sun
     event: sunset
-    offset: -00:30:00
+    id: zonsondergang
   - platform: state
     entity_id:
     - sensor.iemand_thuis
     from: 'off'
     to: 'on'
+    id: thuis
   condition:
   - condition: state
-    entity_id: light.tuin
     state: 'off'
+    entity_id: light.tuin_borders
   - condition: sun
     after: sunset
     after_offset: -00:30:00
   action:
-  - service: light.turn_on
-    target:
-      entity_id: light.tuin
-    data: {}
+  - if:
+    - condition: trigger
+      id:
+      - thuis
+    - condition: time
+      after: '23:30:00'
+    then:
+    - service: scene.turn_on
+      metadata: {}
+      target:
+        entity_id: scene.tuin_nacht
+    else:
+    - service: scene.turn_on
+      metadata: {}
+      target:
+        entity_id: scene.tuin_avond
+    alias: Tuin aan, of nachtscene als na 23:30
   mode: single
 - id: '1702644282263'
   alias: 'Eerste verdieping: verwarmen aan'
@@ -1476,7 +1499,7 @@
       awtrix_displays:
       - 1bb1ba599b35381afa1649231e88e726
       toggle_helper: input_boolean.awtrix_weer
-      my_sensor: weather.knmi_thuis
+      my_sensor: weather.thuis
       language: nl
       show_windspeed: false
       push_icon: '0'
@@ -1595,4 +1618,37 @@
       target:
         entity_id: counter.toiletgebruik_beneden
       data: {}
+  mode: single
+- id: '1707306132106'
+  alias: 01 - iOS actions - Garage
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: Garagedeur
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.garage_deur
+    data: {}
+  mode: single
+- id: '1707636254461'
+  alias: 'Tuin: lampen uit'
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: 0
+  condition:
+  - condition: state
+    entity_id: light.tuin_borders
+    state: 'on'
+  action:
+  - service: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      area_id: tuin
   mode: single
