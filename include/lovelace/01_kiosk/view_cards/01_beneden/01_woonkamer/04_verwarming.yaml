@@ -4,7 +4,7 @@ square: false
 columns: 1
 cards:
   - type: custom:mushroom-climate-card
-    entity: climate.altherma
+    entity: climate.warmtepomp
     name: Thermostaat
     show_temperature_control: true
     collapsible_controls: true

@@ -1340,14 +1340,14 @@
       - 'on'
     then:
     - service: climate.turn_on
-      target:
-        entity_id: climate.altherma
       data: {}
+      target:
+        entity_id: climate.warmtepomp
     else:
     - service: climate.turn_off
-      target:
-        entity_id: climate.altherma
       data: {}
+      target:
+        entity_id: climate.warmtepomp
   mode: single
 - id: '1702645335142'
   alias: 'Beneden: verdeler aan/uit'

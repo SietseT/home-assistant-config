@@ -8,6 +8,7 @@ default_measurement: state
 include: 
   entity_globs:
     - sensor.altherma_*_energy_consumption
+    - sensor.warmtepomp_*_electrical_consumption
     - sensor.*_battery
     - sensor.*_energy
     - sensor.*_humidity

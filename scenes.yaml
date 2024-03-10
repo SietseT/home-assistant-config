@@ -660,15 +660,15 @@
       color_temp_kelvin:
       color_temp:
       hs_color:
-      - 335.143
-      - 27.451
+      - 219.048
+      - 49.412
       rgb_color:
+      - 129
+      - 173
       - 255
-      - 185
-      - 214
       xy_color:
-      - 0.3875
-      - 0.2925
+      - 0.208
+      - 0.217
       entity_id:
       - light.tuin_wand_huis_links_1
       - light.tuin_wand_huis_rechts_1
@@ -692,20 +692,20 @@
       - color_temp
       - xy
       effect:
-      color_mode: xy
-      brightness: 255
-      color_temp_kelvin:
-      color_temp:
+      color_mode: color_temp
+      brightness: 125
+      color_temp_kelvin: 3401
+      color_temp: 294
       hs_color:
-      - 116.68
-      - 99.216
+      - 27.277
+      - 46.969
       rgb_color:
-      - 16
       - 255
-      - 2
+      - 189
+      - 135
       xy_color:
-      - 0.175
-      - 0.744
+      - 0.462
+      - 0.375
       entity_id:
       - light.tuin_wand_huis_rechts_2
       - light.tuin_wand_huis_links_2
